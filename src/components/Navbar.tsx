@@ -44,9 +44,13 @@ export default function Navbar() {
           </div>
 
           <div className="flex items-center gap-3">
-            <button className="text-sm font-medium text-gray-700 hover:text-gray-900 px-3 py-2 rounded-lg hover:bg-gray-100">
-              List Your Company
-            </button>
+            <Link
+              href="/favorites"
+              className="text-sm font-medium text-gray-700 hover:text-red-500 px-3 py-2 rounded-lg hover:bg-gray-50 transition-colors flex items-center gap-1.5"
+            >
+              <span>♥</span>
+              <span>Saved</span>
+            </Link>
             <button className="text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 px-4 py-2 rounded-lg">
               Sign In
             </button>

@@ -45,4 +45,20 @@ export interface RentalItem {
   features: string[];
   safetyNotes: string;
   colors: string[];
+  circuitsNeeded?: number;   // electrical outlets required
+  spaceRequired?: string;    // minimum clear area for setup
+}
+
+export interface Booking {
+  id: string;
+  itemIds: string[];
+  eventDate: string;
+  duration: "oneDay" | "overnight" | "threeDays";
+  setupType: string;
+  deliveryAddress: string;
+  contactName: string;
+  contactPhone: string;
+  contactEmail: string;
+  submittedAt: string;
+  status: "pending";
 }

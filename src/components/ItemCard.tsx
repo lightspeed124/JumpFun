@@ -1,6 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { RentalItem, Company } from "@/types";
+import FavoriteButton from "@/components/FavoriteButton";
 
 interface Props {
   item: RentalItem;
@@ -30,6 +31,10 @@ export default function ItemCard({ item, company }: Props) {
             <span className="bg-white/90 backdrop-blur-sm text-gray-700 text-xs font-medium px-2 py-1 rounded-full">
               {item.category}
             </span>
+          </div>
+          {/* Favorite heart button */}
+          <div className="absolute top-3 right-3">
+            <FavoriteButton itemId={item.id} size="sm" />
           </div>
         </div>
 

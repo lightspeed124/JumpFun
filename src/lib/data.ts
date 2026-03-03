@@ -1907,6 +1907,33 @@ export function searchItems(query: string): RentalItem[] {
 }
 
 /**
+ * Returns items from OTHER companies in the same category as the given item.
+ */
+export function getSimilarItemsFromOtherCompanies(item: RentalItem, limit = 3): RentalItem[] {
+  return rentalItems
+    .filter((i) => i.category === item.category && i.companyId !== item.companyId && i.available)
+    .slice(0, limit);
+}
+
+/**
+ * Returns complementary items from the SAME company (accessories, concessions, tables, tents, games).
+ * Prioritises non-inflatable support categories so the suggestions feel useful.
+ */
+const COMPLEMENT_CATEGORIES = ["Concessions", "Tables & Chairs", "Tents", "Games", "Accessories"];
+export function getComplementaryItems(item: RentalItem, limit = 4): RentalItem[] {
+  const sameCompany = rentalItems.filter(
+    (i) => i.companyId === item.companyId && i.id !== item.id && i.available
+  );
+  // Sort: complement categories first, then everything else
+  sameCompany.sort((a, b) => {
+    const aComp = COMPLEMENT_CATEGORIES.includes(a.category) ? 0 : 1;
+    const bComp = COMPLEMENT_CATEGORIES.includes(b.category) ? 0 : 1;
+    return aComp - bComp;
+  });
+  return sameCompany.slice(0, limit);
+}
+
+/**
  * Returns companies whose serviceArea includes the given city/zip string.
  * Matching is case-insensitive and checks if the input is contained in any
  * service area entry (so "palo alto" matches "East Palo Alto" and "Palo Alto").
