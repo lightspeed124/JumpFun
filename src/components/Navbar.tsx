@@ -7,7 +7,7 @@ export default function Navbar() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           <Link href="/" className="flex items-center">
-            <Image src="/logo.svg" alt="JumpFun" width={200} height={50} priority />
+            <Image src="/logo.png" alt="JumpFun" width={220} height={78} priority />
           </Link>
 
           <div className="hidden md:flex items-center gap-6">
