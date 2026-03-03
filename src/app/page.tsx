@@ -4,6 +4,7 @@ import { getListings, getDistinctCategories } from "@/lib/data";
 import ItemCard from "@/components/ItemCard";
 import HeroSearch from "@/components/HeroSearch";
 import CityRentalsBanner from "@/components/CityRentalsBanner";
+import FavouritesRow from "@/components/FavouritesRow";
 
 export default async function HomePage() {
   const [allItems, categories] = await Promise.all([
@@ -80,6 +81,7 @@ export default async function HomePage() {
 
       {/* ── Category rows ─────────────────────────────────────────────────── */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-12">
+        <FavouritesRow />
         {rows.map((row) => (
           <section key={row.category_slug}>
 
