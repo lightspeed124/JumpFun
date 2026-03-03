@@ -3,6 +3,7 @@ import Image from "next/image";
 import { getListings, getDistinctCategories } from "@/lib/data";
 import ItemCard from "@/components/ItemCard";
 import HeroSearch from "@/components/HeroSearch";
+import CityRentalsBanner from "@/components/CityRentalsBanner";
 
 export default async function HomePage() {
   const [allItems, categories] = await Promise.all([
@@ -72,6 +73,9 @@ export default async function HomePage() {
 
       {/* ── Category rows ─────────────────────────────────────────────────── */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-12">
+
+        {/* City rentals header */}
+        <CityRentalsBanner />
         {rows.map((row) => (
           <section key={row.category_slug}>
 
