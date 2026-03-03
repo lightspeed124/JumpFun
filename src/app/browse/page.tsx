@@ -1,22 +1,14 @@
 import Link from "next/link";
-import {
-  rentalItems,
-  companies,
-  getCompanyById,
-  getCompaniesByLocation,
-} from "@/lib/data";
+import { getListings, getCompanies, getDistinctCategories } from "@/lib/data";
 import ItemCard from "@/components/ItemCard";
-import { Category } from "@/types";
 
 interface SearchParams {
   category?: string;
   q?: string;
   city?: string;
-  date?: string;
   minPrice?: string;
   maxPrice?: string;
   company?: string;
-  theme?: string;
 }
 
 export default async function BrowsePage({
@@ -25,405 +17,162 @@ export default async function BrowsePage({
   searchParams: Promise<SearchParams>;
 }) {
   const params = await searchParams;
-  const {
-    category,
-    q,
-    city,
-    date,
-    minPrice,
-    maxPrice,
-    company: companyFilter,
-    theme,
-  } = params;
+  const { category, q, city, minPrice, maxPrice, company: companySite } = params;
 
-  // --- DoorDash-style location gate ---
-  // Determine which companies serve the requested city/zip.
-  const servingCompanies = city ? getCompaniesByLocation(city) : companies;
-  const servingCompanyIds = new Set(servingCompanies.map((c) => c.id));
-  const noServiceArea = city ? servingCompanies.length === 0 : false;
+  // Build active filter chips for display
+  const activeFilters: { label: string; clearKey: string }[] = [];
+  if (q)           activeFilters.push({ label: `"${q}"`,         clearKey: "q" });
+  if (city)        activeFilters.push({ label: `📍 ${city}`,     clearKey: "city" });
+  if (category)    activeFilters.push({ label: category,          clearKey: "category" });
+  if (companySite) activeFilters.push({ label: companySite,       clearKey: "company" });
+  if (minPrice)    activeFilters.push({ label: `From $${minPrice}`, clearKey: "minPrice" });
+  if (maxPrice)    activeFilters.push({ label: `Up to $${maxPrice}`, clearKey: "maxPrice" });
 
-  // Start from items whose company serves the requested location
-  let filtered = rentalItems.filter((i) => servingCompanyIds.has(i.companyId));
-
-  // Keyword search
-  if (q) {
-    const query = q.toLowerCase();
-    filtered = filtered.filter(
-      (i) =>
-        i.name.toLowerCase().includes(query) ||
-        i.description.toLowerCase().includes(query) ||
-        i.themes.some((t) => t.toLowerCase().includes(query)) ||
-        i.category.toLowerCase().includes(query) ||
-        i.colors.some((c) => c.toLowerCase().includes(query))
-    );
+  function clearFilterHref(key: string) {
+    const p = new URLSearchParams(params as Record<string, string>);
+    p.delete(key);
+    const s = p.toString();
+    return `/browse${s ? `?${s}` : ""}`;
   }
 
-  if (category) {
-    filtered = filtered.filter((i) => i.category === category);
-  }
-
-  if (companyFilter) {
-    filtered = filtered.filter((i) => i.companyId === companyFilter);
-  }
-
-  if (theme) {
-    filtered = filtered.filter((i) =>
-      i.themes.some((t) => t.toLowerCase() === theme.toLowerCase())
-    );
-  }
-
-  if (minPrice) {
-    filtered = filtered.filter((i) => i.price >= parseInt(minPrice));
-  }
-  if (maxPrice) {
-    filtered = filtered.filter((i) => i.price <= parseInt(maxPrice));
-  }
-
-  const allCategories: Category[] = [
-    "Bounce Houses",
-    "Water Slides",
-    "Combos",
-    "Obstacle Courses",
-    "Games",
-    "Concessions",
-    "Tents",
-    "Tables & Chairs",
-    "Accessories",
-  ];
-
-  const allThemes = Array.from(
-    new Set(rentalItems.flatMap((i) => i.themes))
-  ).sort();
-
-  // Helper: build a URL preserving the current city/date context
-  function buildUrl(overrides: Record<string, string | undefined>) {
-    const p = new URLSearchParams();
-    const current: Record<string, string | undefined> = {
+  // Fetch data in parallel
+  const [items, companies, categories] = await Promise.all([
+    getListings({
+      search: q,
       city,
-      date,
-      q,
-      category,
-      theme,
-      company: companyFilter,
-      minPrice,
-      maxPrice,
-    };
-    const merged = { ...current, ...overrides };
-    for (const [k, v] of Object.entries(merged)) {
-      if (v) p.set(k, v);
-    }
-    return `/browse?${p.toString()}`;
-  }
+      categoryName: category,
+      businessSite: companySite,
+      minPrice: minPrice ? Number(minPrice) : undefined,
+      maxPrice: maxPrice ? Number(maxPrice) : undefined,
+    }),
+    getCompanies(),
+    getDistinctCategories(),
+  ]);
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-8">
-      {/* Location Context Banner — DoorDash-style gate */}
-      {city && !noServiceArea && (
-        <div className="bg-indigo-50 border border-indigo-100 rounded-2xl px-5 py-4 mb-6 flex flex-wrap items-center gap-3">
-          <span className="text-indigo-600 text-lg">📍</span>
-          <div className="flex-1 min-w-0">
-            <span className="font-semibold text-indigo-900">
-              Showing rentals available in {city}
-            </span>
-            <span className="text-indigo-600 text-sm ml-2">
-              — {servingCompanies.length} company
-              {servingCompanies.length !== 1 ? "s" : ""} deliver here
-            </span>
-            {date && (
-              <span className="text-indigo-500 text-sm ml-2">
-                · Event date:{" "}
-                {new Date(date + "T00:00:00").toLocaleDateString("en-US", {
-                  month: "long",
-                  day: "numeric",
-                  year: "numeric",
-                })}
-              </span>
-            )}
-          </div>
-          <Link
-            href={buildUrl({ city: undefined, date: undefined })}
-            className="text-xs text-indigo-500 hover:text-indigo-700 whitespace-nowrap"
-          >
-            Change location ×
-          </Link>
-        </div>
-      )}
-
-      {/* No coverage state */}
-      {noServiceArea && (
-        <div className="bg-amber-50 border border-amber-200 rounded-2xl px-5 py-8 mb-6 text-center">
-          <div className="text-5xl mb-3">📍</div>
-          <h2 className="text-xl font-bold text-amber-900 mb-2">
-            No companies in &quot;{city}&quot; yet
-          </h2>
-          <p className="text-amber-700 mb-5 max-w-md mx-auto text-sm">
-            We don&apos;t have any verified rental companies serving that area
-            right now. Browse all available rentals, or check back soon as we
-            add new companies every week.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-3 justify-center">
-            <Link
-              href="/browse"
-              className="bg-indigo-600 text-white font-semibold px-6 py-3 rounded-xl hover:bg-indigo-700 transition-colors text-sm"
-            >
-              Browse All Rentals
-            </Link>
-            <Link
-              href="#"
-              className="border border-amber-300 text-amber-800 font-semibold px-6 py-3 rounded-xl hover:bg-amber-100 transition-colors text-sm"
-            >
-              Notify Me When Available
-            </Link>
-          </div>
-        </div>
-      )}
-
-      {/* Page Header */}
-      {!noServiceArea && (
-        <div className="mb-6">
-          <h1 className="text-3xl font-bold text-gray-900 mb-1">
-            {q
-              ? `Results for "${q}"`
-              : category
-              ? category
-              : city
-              ? `Party Rentals Near ${city}`
-              : "All Party Rentals"}
-          </h1>
-          <p className="text-gray-500 text-sm">
-            {filtered.length} item{filtered.length !== 1 ? "s" : ""} available
-            {city ? ` · delivered to ${city}` : ""}
-          </p>
-        </div>
-      )}
-
-      {/* Keyword search bar — preserves city/date context */}
-      {!noServiceArea && (
-        <form method="GET" className="mb-8">
-          <div className="flex gap-3">
-            {city && <input type="hidden" name="city" value={city} />}
-            {date && <input type="hidden" name="date" value={date} />}
-            {category && <input type="hidden" name="category" value={category} />}
-            <input
-              name="q"
-              type="text"
-              defaultValue={q}
-              placeholder="Search by theme, name, size, color, type..."
-              className="flex-1 border border-gray-200 rounded-xl px-4 py-3 text-sm outline-none focus:border-indigo-400 focus:ring-2 focus:ring-indigo-100 bg-white"
-            />
-            <button
-              type="submit"
-              className="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold px-6 py-3 rounded-xl text-sm transition-colors"
-            >
-              Search
-            </button>
-          </div>
-        </form>
-      )}
-
-      {!noServiceArea && (
-        <div className="flex gap-8">
-          {/* Sidebar Filters */}
-          <aside className="hidden md:block w-64 shrink-0">
-            <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-5 space-y-6 sticky top-24">
-              {/* Category Filter */}
-              <div>
-                <h3 className="font-semibold text-gray-900 mb-3 text-sm">Category</h3>
-                <div className="space-y-1">
-                  <Link
-                    href={buildUrl({ category: undefined, theme: undefined })}
-                    className={`block text-sm px-3 py-2 rounded-lg transition-colors ${
-                      !category
-                        ? "bg-indigo-50 text-indigo-700 font-medium"
-                        : "text-gray-600 hover:bg-gray-50"
-                    }`}
-                  >
-                    All Categories
-                  </Link>
-                  {allCategories.map((cat) => {
-                    const count = filtered.filter((i) => i.category === cat).length;
-                    const totalCount = rentalItems
-                      .filter((i) => servingCompanyIds.has(i.companyId))
-                      .filter((i) => i.category === cat).length;
-                    if (totalCount === 0) return null;
-                    return (
-                      <Link
-                        key={cat}
-                        href={buildUrl({ category: cat, theme: undefined })}
-                        className={`flex justify-between items-center text-sm px-3 py-2 rounded-lg transition-colors ${
-                          category === cat
-                            ? "bg-indigo-50 text-indigo-700 font-medium"
-                            : "text-gray-600 hover:bg-gray-50"
-                        }`}
-                      >
-                        <span>{cat}</span>
-                        <span className="text-xs text-gray-400">{totalCount}</span>
-                      </Link>
-                    );
-                  })}
-                </div>
-              </div>
-
-              {/* Company Filter — only shows companies that serve the city */}
-              <div>
-                <h3 className="font-semibold text-gray-900 mb-3 text-sm">Company</h3>
-                <div className="space-y-1">
-                  {servingCompanies.map((co) => (
-                    <Link
-                      key={co.id}
-                      href={buildUrl({ company: co.id })}
-                      className={`block text-sm px-3 py-2 rounded-lg transition-colors ${
-                        companyFilter === co.id
-                          ? "bg-indigo-50 text-indigo-700 font-medium"
-                          : "text-gray-600 hover:bg-gray-50"
-                      }`}
-                    >
-                      <div className="flex justify-between items-center">
-                        <span className="truncate">{co.name}</span>
-                        <span className="text-xs text-yellow-500 shrink-0">
-                          ★{co.rating}
-                        </span>
-                      </div>
-                    </Link>
-                  ))}
-                </div>
-              </div>
-
-              {/* Price Range */}
-              <div>
-                <h3 className="font-semibold text-gray-900 mb-3 text-sm">Price Range</h3>
-                <div className="space-y-1">
-                  {[
-                    { label: "Under $150", min: undefined, max: "150" },
-                    { label: "$150 – $250", min: "150", max: "250" },
-                    { label: "$250 – $400", min: "250", max: "400" },
-                    { label: "$400+", min: "400", max: undefined },
-                  ].map((range) => {
-                    const isActive =
-                      minPrice === range.min && maxPrice === range.max;
-                    return (
-                      <Link
-                        key={range.label}
-                        href={buildUrl({ minPrice: range.min, maxPrice: range.max })}
-                        className={`block text-sm px-3 py-2 rounded-lg transition-colors ${
-                          isActive
-                            ? "bg-indigo-50 text-indigo-700 font-medium"
-                            : "text-gray-600 hover:bg-gray-50"
-                        }`}
-                      >
-                        {range.label}
-                      </Link>
-                    );
-                  })}
-                </div>
-              </div>
-
-              {/* Theme Filter */}
-              <div>
-                <h3 className="font-semibold text-gray-900 mb-3 text-sm">Theme</h3>
-                <div className="flex flex-wrap gap-1.5">
-                  {allThemes.slice(0, 16).map((t) => (
-                    <Link
-                      key={t}
-                      href={buildUrl({ theme: t })}
-                      className={`text-xs px-2 py-1 rounded-full border transition-colors ${
-                        theme === t
-                          ? "bg-indigo-600 text-white border-indigo-600"
-                          : "border-gray-200 text-gray-600 hover:border-indigo-300"
-                      }`}
-                    >
-                      {t}
-                    </Link>
-                  ))}
-                </div>
-              </div>
-
-              {/* Clear filters */}
-              {(category || companyFilter || minPrice || maxPrice || theme || q) && (
-                <Link
-                  href={buildUrl({
-                    category: undefined,
-                    company: undefined,
-                    minPrice: undefined,
-                    maxPrice: undefined,
-                    theme: undefined,
-                    q: undefined,
-                  })}
-                  className="block text-center text-sm text-red-500 hover:text-red-700 font-medium"
-                >
-                  Clear all filters
-                </Link>
-              )}
+      <div className="flex flex-col lg:flex-row gap-8">
+        {/* ── Sidebar filters ── */}
+        <aside className="lg:w-64 shrink-0">
+          <form method="GET" action="/browse" className="space-y-6">
+            {/* Keyword */}
+            <div>
+              <label className="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-2">Search</label>
+              <input
+                name="q"
+                defaultValue={q}
+                type="text"
+                placeholder="Bounce house, princess…"
+                className="w-full border border-gray-200 rounded-xl px-3 py-2.5 text-sm outline-none focus:border-indigo-400"
+              />
             </div>
-          </aside>
 
-          {/* Results Grid */}
-          <div className="flex-1 min-w-0">
-            {/* Active filter chips */}
-            {(category || theme || companyFilter || city) && (
-              <div className="flex flex-wrap gap-2 mb-5">
-                {city && (
-                  <span className="flex items-center gap-1 bg-indigo-100 text-indigo-700 text-xs font-medium px-3 py-1.5 rounded-full">
-                    📍 {city}
-                    <Link href={buildUrl({ city: undefined, date: undefined })} className="ml-1 hover:text-indigo-900">×</Link>
-                  </span>
-                )}
-                {category && (
-                  <span className="flex items-center gap-1 bg-indigo-100 text-indigo-700 text-xs font-medium px-3 py-1.5 rounded-full">
-                    {category}
-                    <Link href={buildUrl({ category: undefined })} className="ml-1 hover:text-indigo-900">×</Link>
-                  </span>
-                )}
-                {theme && (
-                  <span className="flex items-center gap-1 bg-purple-100 text-purple-700 text-xs font-medium px-3 py-1.5 rounded-full">
-                    Theme: {theme}
-                    <Link href={buildUrl({ theme: undefined })} className="ml-1 hover:text-purple-900">×</Link>
-                  </span>
-                )}
-                {companyFilter && (
-                  <span className="flex items-center gap-1 bg-green-100 text-green-700 text-xs font-medium px-3 py-1.5 rounded-full">
-                    {companies.find((c) => c.id === companyFilter)?.name}
-                    <Link href={buildUrl({ company: undefined })} className="ml-1 hover:text-green-900">×</Link>
-                  </span>
-                )}
-              </div>
-            )}
+            {/* City */}
+            <div>
+              <label className="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-2">Delivery City</label>
+              <input
+                name="city"
+                defaultValue={city}
+                type="text"
+                placeholder="e.g. Palo Alto"
+                className="w-full border border-gray-200 rounded-xl px-3 py-2.5 text-sm outline-none focus:border-indigo-400"
+              />
+            </div>
 
-            {filtered.length === 0 ? (
-              <div className="text-center py-20">
-                <div className="text-6xl mb-4">🎈</div>
-                <h3 className="text-xl font-semibold text-gray-800 mb-2">
-                  No results found
-                </h3>
-                <p className="text-gray-500 mb-6">
-                  Try a different search term, category, or clear your filters.
-                </p>
-                <Link
-                  href={buildUrl({
-                    category: undefined,
-                    theme: undefined,
-                    company: undefined,
-                    minPrice: undefined,
-                    maxPrice: undefined,
-                    q: undefined,
-                  })}
-                  className="inline-block bg-indigo-600 text-white font-medium px-6 py-3 rounded-xl hover:bg-indigo-700 transition-colors"
-                >
-                  Clear Filters
-                </Link>
+            {/* Category */}
+            <div>
+              <label className="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-2">Category</label>
+              <select name="category" defaultValue={category ?? ""}
+                className="w-full border border-gray-200 rounded-xl px-3 py-2.5 text-sm outline-none focus:border-indigo-400 bg-white">
+                <option value="">All categories</option>
+                {categories.map((c) => (
+                  <option key={c.category_slug} value={c.category_name}>{c.category_name} ({c.listing_count})</option>
+                ))}
+              </select>
+            </div>
+
+            {/* Price range */}
+            <div>
+              <label className="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-2">Price Range</label>
+              <div className="flex items-center gap-2">
+                <input name="minPrice" defaultValue={minPrice} type="number" placeholder="$0"
+                  className="w-full border border-gray-200 rounded-xl px-3 py-2.5 text-sm outline-none focus:border-indigo-400" />
+                <span className="text-gray-400 text-sm">–</span>
+                <input name="maxPrice" defaultValue={maxPrice} type="number" placeholder="any"
+                  className="w-full border border-gray-200 rounded-xl px-3 py-2.5 text-sm outline-none focus:border-indigo-400" />
               </div>
-            ) : (
-              <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6">
-                {filtered.map((item) => {
-                  const company = getCompanyById(item.companyId);
-                  if (!company) return null;
-                  return <ItemCard key={item.id} item={item} company={company} />;
-                })}
-              </div>
+            </div>
+
+            {/* Company */}
+            <div>
+              <label className="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-2">Company</label>
+              <select name="company" defaultValue={companySite ?? ""}
+                className="w-full border border-gray-200 rounded-xl px-3 py-2.5 text-sm outline-none focus:border-indigo-400 bg-white">
+                <option value="">All companies</option>
+                {companies.map((c) => (
+                  <option key={c.business_id} value={c.business_site}>{c.business_name}</option>
+                ))}
+              </select>
+            </div>
+
+            <button type="submit"
+              className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-2.5 rounded-xl text-sm transition-colors">
+              Apply Filters
+            </button>
+            {activeFilters.length > 0 && (
+              <Link href="/browse" className="block text-center text-sm text-gray-500 hover:text-gray-700 underline">
+                Clear all filters
+              </Link>
             )}
+          </form>
+        </aside>
+
+        {/* ── Results ── */}
+        <div className="flex-1 min-w-0">
+          {/* Header */}
+          <div className="flex items-center justify-between mb-4 flex-wrap gap-3">
+            <h1 className="text-xl font-bold text-gray-900">
+              {items.length} rental{items.length !== 1 ? "s" : ""}
+              {city ? ` near ${city}` : ""}
+            </h1>
           </div>
+
+          {/* Active filter chips */}
+          {activeFilters.length > 0 && (
+            <div className="flex flex-wrap gap-2 mb-5">
+              {activeFilters.map((f) => (
+                <Link key={f.clearKey} href={clearFilterHref(f.clearKey)}
+                  className="flex items-center gap-1.5 bg-gray-900 text-white text-xs font-medium px-3 py-1.5 rounded-full hover:bg-gray-700 transition-colors">
+                  {f.label} <span className="text-white/70 text-sm leading-none">×</span>
+                </Link>
+              ))}
+            </div>
+          )}
+
+          {/* No results */}
+          {items.length === 0 && (
+            <div className="text-center py-20 bg-gray-50 rounded-3xl">
+              <div className="text-5xl mb-4">🔍</div>
+              <h2 className="text-lg font-bold text-gray-800 mb-2">No rentals found</h2>
+              <p className="text-gray-500 text-sm mb-6">
+                {city
+                  ? `No companies serve "${city}" yet, or try a different spelling.`
+                  : "Try adjusting your filters."}
+              </p>
+              <Link href="/browse" className="inline-block bg-indigo-600 text-white font-semibold px-5 py-2.5 rounded-xl hover:bg-indigo-700 transition-colors text-sm">
+                Clear filters
+              </Link>
+            </div>
+          )}
+
+          {/* Grid */}
+          {items.length > 0 && (
+            <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-5">
+              {items.map((item) => <ItemCard key={item.listing_id} item={item} />)}
+            </div>
+          )}
         </div>
-      )}
+      </div>
     </div>
   );
 }

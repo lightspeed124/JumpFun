@@ -3,6 +3,7 @@
 import { useRouter } from "next/navigation";
 import { addFavorite } from "@/lib/favorites";
 
+// itemId is the string form of listing_id
 export default function BookNowButton({ itemId }: { itemId: string }) {
   const router = useRouter();
 

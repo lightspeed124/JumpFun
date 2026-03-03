@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { rentalItems, getCompaniesByLocation, getCompanyById } from "@/lib/data";
+import { supabase } from "@/lib/supabase";
 import { RentalItem } from "@/types";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
@@ -38,168 +38,122 @@ const INITIAL_FORM: FormData = {
 
 // ─── Scoring Algorithm ────────────────────────────────────────────────────────
 
-function scoreItems(data: FormData): ScoredItem[] {
-  const kidsMap: Record<string, number> = {
-    under10: 8,
-    "10to20": 15,
-    "20to50": 30,
-    "50plus": 60,
-  };
+function scoreItems(items: RentalItem[], data: FormData): ScoredItem[] {
   const budgetMap: Record<string, number> = {
     "150": 150,
     "300": 300,
     "500": 500,
     "999": 9999,
   };
-
-  const maxKids = kidsMap[data.kidsCount] ?? 10;
   const maxBudget = budgetMap[data.budget] ?? 9999;
 
-  // DoorDash gate: only items from companies serving the city
-  let candidates = rentalItems.filter((i) => i.available);
-  if (data.city.trim()) {
-    const servingIds = new Set(
-      getCompaniesByLocation(data.city).map((c) => c.id)
-    );
-    candidates = candidates.filter((i) => servingIds.has(i.companyId));
-  }
-
-  return candidates
+  return items
     .map((item): ScoredItem => {
       let score = 0;
       const reasons: string[] = [];
 
+      const cat = item.category_name.toLowerCase();
+      const titleLow = item.title.toLowerCase();
+      const descLow = (item.description ?? "").toLowerCase();
+      const price = item.base_price_amount ?? item.min_price_amount;
+
       // ── Budget ──────────────────────────────────────────────────────────────
-      if (item.price <= maxBudget) {
+      if (price != null && price <= maxBudget) {
         score += 2;
-        if (data.budget !== "999") reasons.push(`Within $${maxBudget} budget`);
+      } else if (price != null && price > maxBudget) {
+        score -= 4;
       } else {
-        score -= 4; // over budget is a strong negative
-      }
-
-      // ── Capacity ────────────────────────────────────────────────────────────
-      if (item.capacity === 0) {
-        // Non-capacity items (tents, concessions, etc.) — neutral
-        score += 1;
-      } else if (item.capacity >= maxKids) {
-        score += 2;
-        reasons.push(`Fits up to ${item.capacity} kids`);
-      } else if (item.capacity < maxKids * 0.5) {
-        score -= 2; // clearly too small
-      }
-
-      // ── Age Range ───────────────────────────────────────────────────────────
-      const isToddlerItem =
-        item.ageRange.startsWith("1") || item.name.toLowerCase().includes("toddler");
-      if (data.ageRange === "toddler") {
-        if (isToddlerItem) {
-          score += 4;
-          reasons.push("Toddler-safe design");
-        } else if (
-          ["Tents", "Tables & Chairs", "Concessions"].includes(item.category)
-        ) {
-          score += 1; // support items are always relevant
-        } else {
-          score -= 2; // not suitable for toddlers
-        }
-      } else if (data.ageRange === "kids") {
-        if (!isToddlerItem && ["Bounce Houses", "Combos", "Water Slides", "Obstacle Courses", "Games"].includes(item.category)) {
-          score += 2;
-          reasons.push("Great for kids 5–12");
-        }
-      } else if (data.ageRange === "teens") {
-        if (["Obstacle Courses", "Water Slides", "Games"].includes(item.category)) {
-          score += 3;
-          reasons.push("Teen-friendly activity");
-        } else if (["Bounce Houses"].includes(item.category)) {
-          score += 1;
-        }
-      } else if (data.ageRange === "mixed") {
-        if (item.category === "Combos") {
-          score += 2;
-          reasons.push("Fits mixed age groups");
-        } else {
-          score += 1;
-        }
+        score += 1; // no price listed, neutral
       }
 
       // ── Event Type → Category ───────────────────────────────────────────────
       if (data.eventType === "birthday") {
-        if (item.category === "Bounce Houses") {
-          score += 3;
-          reasons.push("Birthday party staple");
-        } else if (item.category === "Combos") {
-          score += 2;
-          reasons.push("Birthday party favorite");
-        } else if (item.category === "Concessions") {
-          score += 2;
-          reasons.push("Perfect birthday add-on");
-        } else if (item.category === "Water Slides") {
+        if (cat.includes("bounce")) {
+          score += 3; reasons.push("Birthday party staple");
+        } else if (cat.includes("combo")) {
+          score += 2; reasons.push("Birthday party favorite");
+        } else if (cat.includes("concession")) {
+          score += 2; reasons.push("Perfect birthday add-on");
+        } else if (cat.includes("water")) {
+          score += 1;
+        } else {
           score += 1;
         }
       } else if (data.eventType === "corporate") {
-        if (item.category === "Obstacle Courses") {
-          score += 4;
-          reasons.push("Team-building activity");
-        } else if (["Tents", "Tables & Chairs"].includes(item.category)) {
-          score += 3;
-          reasons.push("Corporate event essential");
-        } else if (item.category === "Concessions") {
-          score += 2;
-          reasons.push("Crowd-pleasing add-on");
-        } else if (["Bounce Houses", "Combos", "Water Slides"].includes(item.category)) {
-          score -= 1; // less relevant for corporate
+        if (cat.includes("obstacle")) {
+          score += 4; reasons.push("Team-building activity");
+        } else if (cat.includes("tent") || cat.includes("table") || cat.includes("chair")) {
+          score += 3; reasons.push("Corporate event essential");
+        } else if (cat.includes("concession")) {
+          score += 2; reasons.push("Crowd-pleasing add-on");
+        } else {
+          score += 1;
         }
       } else if (data.eventType === "school") {
-        if (item.category === "Obstacle Courses") {
-          score += 4;
-          reasons.push("School carnival hit");
-        } else if (["Bounce Houses", "Combos"].includes(item.category)) {
-          score += 2;
-          reasons.push("School event favorite");
-        } else if (item.category === "Concessions") {
-          score += 2;
-          reasons.push("Carnival concession");
+        if (cat.includes("obstacle")) {
+          score += 4; reasons.push("School carnival hit");
+        } else if (cat.includes("bounce") || cat.includes("combo")) {
+          score += 2; reasons.push("School event favorite");
+        } else if (cat.includes("concession")) {
+          score += 2; reasons.push("Carnival concession");
+        } else {
+          score += 1;
         }
       } else if (data.eventType === "blockparty") {
-        if (["Obstacle Courses", "Combos", "Water Slides"].includes(item.category)) {
-          score += 3;
-          reasons.push("Block party crowd-pleaser");
-        } else if (["Tents", "Tables & Chairs"].includes(item.category)) {
-          score += 3;
-          reasons.push("Block party essential");
+        if (cat.includes("obstacle") || cat.includes("combo") || cat.includes("water")) {
+          score += 3; reasons.push("Block party crowd-pleaser");
+        } else if (cat.includes("tent") || cat.includes("table") || cat.includes("chair")) {
+          score += 3; reasons.push("Block party essential");
+        } else {
+          score += 1;
         }
+      } else {
+        score += 1;
       }
 
       // ── Indoor / Outdoor ────────────────────────────────────────────────────
       if (data.setting === "indoor") {
-        if (item.category === "Water Slides") score -= 4; // outdoor only
-        if (["Bounce Houses", "Combos", "Obstacle Courses"].includes(item.category)) {
+        if (cat.includes("water")) {
+          score -= 4;
+        } else if (cat.includes("bounce") || cat.includes("combo") || cat.includes("obstacle")) {
           score += 1;
-          // only reason if not already added
-          if (!reasons.some((r) => r.includes("indoor")))
-            reasons.push("Works indoors");
+          reasons.push("Works indoors");
         }
       } else if (data.setting === "outdoor") {
-        if (item.category === "Tents") {
-          score += 1;
-          reasons.push("Provides outdoor shade");
+        if (cat.includes("tent")) {
+          score += 1; reasons.push("Provides outdoor shade");
         }
-        if (item.category === "Water Slides") {
-          score += 1;
-          if (!reasons.some((r) => r.includes("outdoor")))
-            reasons.push("Outdoor summer fun");
+        if (cat.includes("water")) {
+          score += 1; reasons.push("Outdoor summer fun");
         }
       }
 
-      // ── Theme Match ─────────────────────────────────────────────────────────
+      // ── Age Range ───────────────────────────────────────────────────────────
+      if (data.ageRange === "toddler") {
+        if (titleLow.includes("toddler") || descLow.includes("toddler")) {
+          score += 4; reasons.push("Toddler-safe design");
+        } else if (cat.includes("concession") || cat.includes("tent")) {
+          score += 1;
+        }
+      } else if (data.ageRange === "teens") {
+        if (cat.includes("obstacle") || cat.includes("water") || cat.includes("game")) {
+          score += 3; reasons.push("Teen-friendly activity");
+        }
+      } else if (data.ageRange === "mixed") {
+        if (cat.includes("combo")) {
+          score += 2; reasons.push("Fits mixed age groups");
+        } else {
+          score += 1;
+        }
+      }
+
+      // ── Theme Match (keyword search in title/description) ───────────────────
       if (data.themes.length > 0) {
-        const hits = item.themes.filter((t) =>
-          data.themes.some((sel) => sel.toLowerCase() === t.toLowerCase())
+        const hit = data.themes.find(
+          (t) => titleLow.includes(t.toLowerCase()) || descLow.includes(t.toLowerCase())
         );
-        if (hits.length > 0) {
-          score += hits.length * 3;
-          reasons.push(`${hits[0]} themed`);
+        if (hit) {
+          score += 3; reasons.push(`${hit} themed`);
         }
       }
 
@@ -342,37 +296,47 @@ const THEME_OPTIONS = [
 
 function ResultCard({ scored }: { scored: ScoredItem }) {
   const { item, reasons } = scored;
-  const company = getCompanyById(item.companyId);
-  if (!company) return null;
+  const price = item.base_price_amount ?? item.min_price_amount;
 
   return (
-    <Link href={`/items/${item.id}`} className="group block">
+    <Link href={`/items/${item.listing_id}`} className="group block">
       <div className="bg-white rounded-2xl border border-gray-100 shadow-sm hover:shadow-md transition-all hover:-translate-y-0.5 overflow-hidden">
         <div className="relative h-44 w-full bg-gray-100">
-          <Image
-            src={item.images[0]}
-            alt={item.name}
-            fill
-            className="object-cover group-hover:scale-105 transition-transform duration-300"
-            sizes="(max-width: 768px) 100vw, 33vw"
-          />
+          {item.primary_image_url ? (
+            <Image
+              src={item.primary_image_url}
+              alt={item.title}
+              fill
+              className="object-cover group-hover:scale-105 transition-transform duration-300"
+              sizes="(max-width: 768px) 100vw, 33vw"
+              unoptimized
+            />
+          ) : (
+            <div className="w-full h-full flex items-center justify-center text-5xl bg-indigo-50">🎪</div>
+          )}
           <div className="absolute top-3 left-3">
             <span className="bg-white/90 backdrop-blur-sm text-gray-700 text-xs font-medium px-2 py-1 rounded-full">
-              {item.category}
+              {item.category_name}
             </span>
           </div>
         </div>
         <div className="p-4">
           <div className="flex justify-between items-start gap-2 mb-2">
             <h3 className="font-semibold text-gray-900 text-sm leading-tight group-hover:text-indigo-600 transition-colors">
-              {item.name}
+              {item.title}
             </h3>
             <div className="text-right shrink-0">
-              <div className="text-base font-bold text-gray-900">${item.price}</div>
-              <div className="text-xs text-gray-400">/ day</div>
+              {price != null ? (
+                <>
+                  <div className="text-base font-bold text-gray-900">${Math.round(price)}</div>
+                  <div className="text-xs text-gray-400">/ day</div>
+                </>
+              ) : (
+                <div className="text-sm text-gray-400">Call for price</div>
+              )}
             </div>
           </div>
-          <p className="text-xs text-gray-400 mb-3">{company.name} · ★{company.rating}</p>
+          <p className="text-xs text-gray-400 mb-3">{item.business_name}</p>
 
           {/* Match reason tags */}
           {reasons.length > 0 && (
@@ -399,6 +363,7 @@ export default function PlanPage() {
   const [step, setStep] = useState(1);
   const [form, setForm] = useState<FormData>(INITIAL_FORM);
   const [results, setResults] = useState<ScoredItem[] | null>(null);
+  const [loading, setLoading] = useState(false);
 
   const set = <K extends keyof FormData>(k: K, v: FormData[K]) =>
     setForm((f) => ({ ...f, [k]: v }));
@@ -411,7 +376,42 @@ export default function PlanPage() {
         : [...f.themes, t],
     }));
 
-  const submit = () => setResults(scoreItems(form));
+  const submit = async () => {
+    setLoading(true);
+    try {
+      const budgetMap: Record<string, number> = {
+        "150": 150, "300": 300, "500": 500, "999": 9999,
+      };
+      const maxBudget = budgetMap[form.budget] ?? 9999;
+
+      // Find business sites that serve the entered city
+      let businessSites: string[] | null = null;
+      if (form.city.trim()) {
+        const { data: areas } = await supabase
+          .from("app_service_areas")
+          .select("business_site")
+          .ilike("city", `%${form.city.trim()}%`);
+        if (areas && areas.length > 0) {
+          businessSites = [...new Set(areas.map((a: { business_site: string }) => a.business_site))];
+        }
+      }
+
+      // Fetch listings
+      let query = supabase.from("app_listings").select("*").limit(150);
+      if (businessSites) {
+        query = query.in("business_site", businessSites);
+      }
+      if (form.budget && form.budget !== "999") {
+        query = query.lte("base_price_amount", maxBudget);
+      }
+
+      const { data } = await query;
+      const items = (data as RentalItem[]) ?? [];
+      setResults(scoreItems(items, form));
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const reset = () => {
     setForm(INITIAL_FORM);
@@ -426,11 +426,8 @@ export default function PlanPage() {
     if (form.date) p.set("date", form.date);
     const budgetMap: Record<string, string> = { "150": "150", "300": "300", "500": "500" };
     if (form.budget && budgetMap[form.budget]) p.set("maxPrice", budgetMap[form.budget]);
-    if (form.themes.length === 1) p.set("theme", form.themes[0]);
     return `/browse?${p.toString()}`;
   })();
-
-  const servingCompanies = form.city ? getCompaniesByLocation(form.city) : [];
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -447,7 +444,7 @@ export default function PlanPage() {
 
       <div className="max-w-2xl mx-auto px-4 py-10">
         {/* Progress dots */}
-        {!results && (
+        {!results && !loading && (
           <div className="flex items-center justify-center gap-2 mb-8">
             {[1, 2, 3, 4].map((s) => (
               <div key={s} className="flex items-center gap-2">
@@ -474,8 +471,16 @@ export default function PlanPage() {
           </div>
         )}
 
+        {/* Loading state */}
+        {loading && (
+          <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-16 text-center">
+            <div className="text-5xl mb-4 animate-bounce">🎪</div>
+            <p className="text-gray-600 font-medium">Finding your perfect picks…</p>
+          </div>
+        )}
+
         {/* ── Step 1: Where & When ─────────────────────────────────────────── */}
-        {!results && step === 1 && (
+        {!results && !loading && step === 1 && (
           <StepCard
             title="Where's the party?"
             subtitle="We'll show you companies that can actually deliver to you."
@@ -495,17 +500,8 @@ export default function PlanPage() {
                   className="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm outline-none focus:border-indigo-400 focus:ring-2 focus:ring-indigo-100"
                 />
                 {form.city.trim() && (
-                  <p className="text-xs mt-1.5">
-                    {servingCompanies.length > 0 ? (
-                      <span className="text-green-600 font-medium">
-                        ✓ {servingCompanies.length} company
-                        {servingCompanies.length !== 1 ? "s" : ""} deliver to {form.city}
-                      </span>
-                    ) : (
-                      <span className="text-amber-600">
-                        ⚠ No companies serving this area yet — we&apos;ll show all available.
-                      </span>
-                    )}
+                  <p className="text-xs mt-1.5 text-green-600 font-medium">
+                    ✓ We&apos;ll find companies that deliver to {form.city}
                   </p>
                 )}
               </div>
@@ -525,7 +521,7 @@ export default function PlanPage() {
         )}
 
         {/* ── Step 2: Event Details ────────────────────────────────────────── */}
-        {!results && step === 2 && (
+        {!results && !loading && step === 2 && (
           <StepCard
             title="Tell us about the event"
             subtitle="This helps us recommend the right size and type of rental."
@@ -631,7 +627,7 @@ export default function PlanPage() {
         )}
 
         {/* ── Step 3: Budget ───────────────────────────────────────────────── */}
-        {!results && step === 3 && (
+        {!results && !loading && step === 3 && (
           <StepCard
             title="What's your budget?"
             subtitle="This is for the rental items only — delivery and setup are free."
@@ -661,7 +657,7 @@ export default function PlanPage() {
         )}
 
         {/* ── Step 4: Themes (Optional) ────────────────────────────────────── */}
-        {!results && step === 4 && (
+        {!results && !loading && step === 4 && (
           <StepCard
             title="Any theme in mind?"
             subtitle="Optional — skip if you don't have a theme yet."
@@ -759,7 +755,7 @@ export default function PlanPage() {
               <>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 mb-8">
                   {results.map((s) => (
-                    <ResultCard key={s.item.id} scored={s} />
+                    <ResultCard key={s.item.listing_id} scored={s} />
                   ))}
                 </div>
 
