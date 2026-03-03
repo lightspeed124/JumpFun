@@ -7,9 +7,10 @@ interface Props {
   itemId: string;
   size?: "sm" | "md" | "lg";
   className?: string;
+  showLabel?: boolean;
 }
 
-export default function FavoriteButton({ itemId, size = "md", className = "" }: Props) {
+export default function FavoriteButton({ itemId, size = "md", className = "", showLabel = false }: Props) {
   const [saved, setSaved] = useState(false);
 
   useEffect(() => {
@@ -27,6 +28,19 @@ export default function FavoriteButton({ itemId, size = "md", className = "" }: 
     md: "w-10 h-10 text-lg",
     lg: "w-12 h-12 text-xl",
   }[size];
+
+  if (showLabel) {
+    return (
+      <button
+        onClick={handleClick}
+        aria-label={saved ? "Remove from favorites" : "Save to favourites"}
+        className={`w-full flex items-center justify-center gap-2 border-2 ${saved ? "border-red-300 text-red-500" : "border-gray-200 text-gray-700 hover:border-red-300 hover:text-red-500"} font-semibold py-3 rounded-xl transition-colors ${className}`}
+      >
+        <span className={saved ? "text-red-500" : "text-gray-400"}>{saved ? "♥" : "♡"}</span>
+        <span className="text-sm">{saved ? "Saved to Favourites" : "Save to Favourites"}</span>
+      </button>
+    );
+  }
 
   return (
     <button

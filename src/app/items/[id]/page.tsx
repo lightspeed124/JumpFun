@@ -55,9 +55,9 @@ export default async function ItemDetailPage({
         <div className="lg:col-span-2">
           {/* Image gallery */}
           <div className="grid grid-cols-2 gap-3 mb-8">
-            <div className="col-span-2 relative h-80 rounded-2xl overflow-hidden bg-gray-100">
+            <div className="col-span-2 relative h-96 rounded-2xl overflow-hidden bg-gray-100">
               {heroImg ? (
-                <Image src={heroImg} alt={item.title} fill className="object-cover" sizes="(max-width: 1024px) 100vw, 66vw" priority unoptimized />
+                <Image src={heroImg} alt={item.title} fill className="object-contain" sizes="(max-width: 1024px) 100vw, 66vw" priority unoptimized />
               ) : (
                 <div className="w-full h-full flex items-center justify-center text-8xl bg-indigo-50">🎪</div>
               )}
@@ -171,10 +171,7 @@ export default async function ItemDetailPage({
             <div className="space-y-3">
               <BookNowButton itemId={String(listingId)} />
 
-              <div className="flex items-center justify-center gap-2 w-full border-2 border-gray-200 hover:border-red-300 text-gray-700 hover:text-red-500 font-semibold py-3 rounded-xl transition-colors">
-                <FavoriteButton itemId={String(listingId)} size="sm" className="shadow-none border-none bg-transparent" />
-                <span className="text-sm">Save to Favourites</span>
-              </div>
+              <FavoriteButton itemId={String(listingId)} showLabel />
 
               {company?.phone && (
                 <a href={`tel:${company.phone.replace(/\D/g, "")}`}
@@ -204,8 +201,8 @@ export default async function ItemDetailPage({
         <div className="mt-16">
           <div className="flex justify-between items-center mb-6">
             <div>
-              <h2 className="text-2xl font-bold text-gray-900">You might also be interested in</h2>
-              <p className="text-sm text-gray-500 mt-1">Add-ons from {item.business_name}</p>
+              <h2 className="text-2xl font-bold text-gray-900">Bundle More from {item.business_name}</h2>
+              <p className="text-sm text-gray-500 mt-1">Add more items from this company to your booking</p>
             </div>
             <Link href={`/companies/${encodeURIComponent(item.business_site)}`}
               className="text-indigo-600 hover:text-indigo-700 text-sm font-medium">View all →</Link>
@@ -221,7 +218,7 @@ export default async function ItemDetailPage({
         <div className="mt-14">
           <div className="flex justify-between items-center mb-6">
             <div>
-              <h2 className="text-2xl font-bold text-gray-900">Similar products from other businesses</h2>
+              <h2 className="text-2xl font-bold text-gray-900">Compare Similar Options from Other Companies</h2>
               <p className="text-sm text-gray-500 mt-1">More {item.category_name} from other local companies</p>
             </div>
             <Link href={`/browse?category=${encodeURIComponent(item.category_name)}`}
