@@ -29,7 +29,7 @@ export default async function HomePage() {
       <section className="relative h-[66vh] min-h-[520px] overflow-hidden">
         {/* Illustrated background scene */}
         <Image
-          src="/hero-bg.svg"
+          src="/landing page background.png"
           alt="Kids having a blast in a bounce house on a sunny day"
           fill
           className="object-cover object-center"
