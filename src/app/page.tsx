@@ -26,39 +26,45 @@ export default async function HomePage() {
     <div className="bg-white min-h-screen">
 
       {/* ── Hero ─────────────────────────────────────────────────────────── */}
-      <section className="relative h-[52vh] min-h-[420px]">
+      <section className="relative h-[66vh] min-h-[520px] overflow-hidden">
+        {/* Illustrated background scene */}
         <Image
-          src="https://images.unsplash.com/photo-1527529482837-4698179dc6ce?w=1600&q=80"
-          alt="Kids party celebration"
+          src="/hero-bg.svg"
+          alt="Kids having a blast in a bounce house on a sunny day"
           fill
           className="object-cover object-center"
           priority
         />
-        {/* gradient: dark top (for nav readability) fading to lighter mid, dark bottom */}
-        <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/20 to-black/65" />
+        {/* Gradient overlay — light at top, heavier at bottom so text pops */}
+        <div className="absolute inset-0 bg-gradient-to-b from-black/55 via-black/15 to-black/70" />
 
-        <div className="relative h-full flex flex-col items-center justify-center px-4 text-center gap-6">
-          <div>
-            <p className="text-white/70 text-[11px] font-bold tracking-[0.2em] uppercase mb-3">
-              Bounce houses · water slides · party rentals
+        <div className="relative h-full flex flex-col items-center justify-center px-4 text-center gap-7">
+          <div className="space-y-4">
+            <p className="text-white/80 text-[11px] font-bold tracking-[0.22em] uppercase">
+              Bounce Houses &nbsp;·&nbsp; Water Slides &nbsp;·&nbsp; Obstacle Courses &nbsp;·&nbsp; Combo Jumpers
             </p>
-            <h1 className="text-4xl md:text-[52px] font-extrabold text-white leading-tight drop-shadow-lg">
-              Book the perfect rental<br className="hidden sm:block" /> for your next party
+            <h1 className="text-4xl md:text-[54px] font-extrabold text-white leading-tight drop-shadow-lg">
+              Your kids&rsquo; next party is about to<br className="hidden sm:block" />
+              <span className="text-yellow-300"> get a whole lot more fun</span>
             </h1>
+            <p className="text-white/75 text-base md:text-lg font-medium max-w-xl mx-auto leading-relaxed">
+              Browse hundreds of bounce houses and inflatables near you —<br className="hidden md:block" />
+              pick your favorite and book it in minutes.
+            </p>
           </div>
 
           {/* Search bar */}
-          <div className="w-full max-w-2xl">
+          <div className="w-full max-w-3xl">
             <HeroSearch />
           </div>
 
-          <p className="text-sm text-white/70">
+          <p className="text-sm text-white/65">
             Not sure what to pick?{" "}
             <Link
               href="/plan"
-              className="text-white font-semibold underline underline-offset-2 hover:text-white/90"
+              className="text-yellow-300 font-semibold underline underline-offset-2 hover:text-yellow-200"
             >
-              Try the AI Planner →
+              Try our free AI Planner →
             </Link>
           </p>
         </div>

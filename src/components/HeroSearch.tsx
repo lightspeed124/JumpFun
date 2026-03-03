@@ -18,39 +18,39 @@ export default function HeroSearch() {
 
   return (
     <form onSubmit={handleSearch} className="w-full">
-      <div className="flex items-center bg-white rounded-full shadow-2xl border border-white/30 overflow-hidden max-w-2xl mx-auto">
+      <div className="flex items-center bg-white rounded-full shadow-[0_8px_40px_rgba(0,0,0,0.28)] border border-white/20 overflow-hidden max-w-3xl mx-auto">
         {/* What */}
-        <div className="flex-1 px-6 py-4 min-w-0">
-          <div className="text-[11px] font-bold text-gray-900 mb-0.5">What</div>
+        <div className="flex-1 px-7 py-4 min-w-0">
+          <div className="text-[11px] font-bold text-gray-900 tracking-wide mb-1">What</div>
           <input
             type="text"
             value={keyword}
             onChange={(e) => setKeyword(e.target.value)}
-            placeholder="Bounce house, princess theme, water slide…"
-            className="w-full outline-none text-gray-700 text-sm placeholder-gray-400 bg-transparent truncate"
+            placeholder="Bounce house, water slide, obstacle course…"
+            className="w-full outline-none text-gray-800 text-sm placeholder-gray-400 bg-transparent truncate"
           />
         </div>
 
         {/* Divider */}
-        <div className="w-px h-8 bg-gray-200 shrink-0" />
+        <div className="w-px h-10 bg-gray-200 shrink-0" />
 
         {/* Where */}
-        <div className="flex-1 px-6 py-4 min-w-0">
-          <div className="text-[11px] font-bold text-gray-900 mb-0.5">Where</div>
+        <div className="flex-1 px-7 py-4 min-w-0">
+          <div className="text-[11px] font-bold text-gray-900 tracking-wide mb-1">Where</div>
           <input
             type="text"
             value={city}
             onChange={(e) => setCity(e.target.value)}
-            placeholder="City (e.g. Palo Alto)"
-            className="w-full outline-none text-gray-700 text-sm placeholder-gray-400 bg-transparent"
+            placeholder="City (e.g. Palo Alto, San Jose…)"
+            className="w-full outline-none text-gray-800 text-sm placeholder-gray-400 bg-transparent"
           />
         </div>
 
         {/* Search button */}
-        <div className="pr-3 shrink-0">
+        <div className="pr-2 shrink-0">
           <button
             type="submit"
-            className="bg-rose-500 hover:bg-rose-600 text-white rounded-full w-12 h-12 flex items-center justify-center transition-colors shadow-sm"
+            className="bg-rose-500 hover:bg-rose-600 active:bg-rose-700 text-white rounded-full w-14 h-14 flex items-center justify-center transition-colors shadow-md"
             aria-label="Search"
           >
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5">

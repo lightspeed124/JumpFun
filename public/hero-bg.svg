@@ -1,0 +1,224 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 600" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#2E8BC8"/>
+      <stop offset="55%" stop-color="#72C1F0"/>
+      <stop offset="100%" stop-color="#B8E2FF"/>
+    </linearGradient>
+    <linearGradient id="grass" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#56B056"/>
+      <stop offset="100%" stop-color="#2E7D32"/>
+    </linearGradient>
+    <radialGradient id="sunGlow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#FFE566" stop-opacity="0.65"/>
+      <stop offset="100%" stop-color="#FFE566" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="grassSheen" cx="50%" cy="0%" r="60%">
+      <stop offset="0%" stop-color="#6EC96E"/>
+      <stop offset="100%" stop-color="#3A9A3A"/>
+    </radialGradient>
+  </defs>
+
+  <!-- ─── SKY ─────────────────────────────────────────────────── -->
+  <rect width="1400" height="600" fill="url(#sky)"/>
+
+  <!-- ─── SUN ──────────────────────────────────────────────────── -->
+  <ellipse cx="1180" cy="95" rx="230" ry="230" fill="url(#sunGlow)"/>
+  <g transform="translate(1180,95)">
+    <g fill="#FFD700" opacity="0.95">
+      <polygon points="0,-95 -11,-65 11,-65"/>
+      <polygon points="67,-67 46,-52 52,-46"/>
+      <polygon points="95,0 65,-11 65,11"/>
+      <polygon points="67,67 52,46 46,52"/>
+      <polygon points="0,95 -11,65 11,65"/>
+      <polygon points="-67,67 -52,46 -46,52"/>
+      <polygon points="-95,0 -65,11 -65,-11"/>
+      <polygon points="-67,-67 -46,-52 -52,-46"/>
+    </g>
+    <circle r="60" fill="#FFD700"/>
+    <circle r="50" fill="#FFE566"/>
+  </g>
+
+  <!-- ─── CLOUDS ────────────────────────────────────────────────── -->
+  <g fill="white" opacity="0.88">
+    <ellipse cx="185" cy="98" rx="95" ry="44"/>
+    <ellipse cx="248" cy="80" rx="72" ry="42"/>
+    <ellipse cx="135" cy="112" rx="62" ry="34"/>
+    <ellipse cx="540" cy="72" rx="82" ry="38"/>
+    <ellipse cx="600" cy="56" rx="66" ry="36"/>
+    <ellipse cx="492" cy="82" rx="58" ry="30"/>
+    <ellipse cx="840" cy="85" rx="58" ry="28"/>
+    <ellipse cx="888" cy="72" rx="46" ry="26"/>
+  </g>
+
+  <!-- ─── DISTANT HILLS / TREELINE ──────────────────────────────── -->
+  <ellipse cx="100" cy="430" rx="160" ry="70" fill="#3A8E3A" opacity="0.4"/>
+  <ellipse cx="1300" cy="420" rx="150" ry="65" fill="#3A8E3A" opacity="0.35"/>
+  <ellipse cx="700" cy="450" rx="800" ry="50" fill="#4CAF50" opacity="0.25"/>
+
+  <!-- ─── GRASS ──────────────────────────────────────────────────── -->
+  <path d="M0 455 Q350 440 700 455 Q1050 470 1400 448 L1400 600 L0 600 Z" fill="url(#grass)"/>
+  <path d="M0 455 Q350 442 700 457 Q1050 472 1400 450" fill="none" stroke="#6EC96E" stroke-width="5" opacity="0.7"/>
+
+  <!-- ─── TREE LEFT ───────────────────────────────────────────────── -->
+  <rect x="62" y="290" width="28" height="175" rx="7" fill="#6D4C41"/>
+  <ellipse cx="76" cy="300" rx="80" ry="64" fill="#1B5E20"/>
+  <ellipse cx="76" cy="272" rx="64" ry="52" fill="#2E7D32"/>
+  <ellipse cx="76" cy="248" rx="48" ry="40" fill="#388E3C"/>
+  <ellipse cx="76" cy="230" rx="34" ry="30" fill="#43A047"/>
+
+  <!-- ─── TREE RIGHT BACKGROUND ───────────────────────────────────── -->
+  <rect x="1308" y="325" width="22" height="135" rx="5" fill="#6D4C41"/>
+  <ellipse cx="1319" cy="338" rx="65" ry="55" fill="#1B5E20"/>
+  <ellipse cx="1319" cy="310" rx="52" ry="44" fill="#2E7D32"/>
+  <ellipse cx="1319" cy="288" rx="40" ry="34" fill="#388E3C"/>
+
+  <!-- ─── BOUNCE HOUSE COMBO JUMPER ─────────────────────────────── -->
+  <g transform="translate(285,125)">
+
+    <!-- Base inflatable body -->
+    <rect x="0" y="168" width="590" height="235" rx="28" fill="#D32F2F"/>
+
+    <!-- Dome top (main bounce area) -->
+    <ellipse cx="295" cy="168" rx="300" ry="104" fill="#D32F2F"/>
+    <!-- Dome color bands -->
+    <ellipse cx="295" cy="168" rx="240" ry="83" fill="#EF6C00"/>
+    <ellipse cx="295" cy="168" rx="175" ry="62" fill="#F9A825"/>
+    <ellipse cx="295" cy="168" rx="112" ry="42" fill="#EF6C00"/>
+
+    <!-- Banner / flags on top -->
+    <polygon points="200,68 215,50 230,68" fill="#E53935"/>
+    <polygon points="260,58 275,38 290,58" fill="#1565C0"/>
+    <polygon points="320,55 335,35 350,55" fill="#F9A825"/>
+    <polygon points="370,62 385,42 400,62" fill="#2E7D32"/>
+    <line x1="200" y1="58" x2="400" y2="45" stroke="#555" stroke-width="2" opacity="0.6"/>
+
+    <!-- Bounce chamber interior (mesh look) -->
+    <rect x="28" y="175" width="364" height="218" rx="14" fill="#EF9A9A" opacity="0.6"/>
+    <!-- Grid lines -->
+    <line x1="28" y1="215" x2="392" y2="215" stroke="#C62828" stroke-width="1.5" opacity="0.35"/>
+    <line x1="28" y1="258" x2="392" y2="258" stroke="#C62828" stroke-width="1.5" opacity="0.35"/>
+    <line x1="28" y1="301" x2="392" y2="301" stroke="#C62828" stroke-width="1.5" opacity="0.35"/>
+    <line x1="28" y1="345" x2="392" y2="345" stroke="#C62828" stroke-width="1.5" opacity="0.35"/>
+    <line x1="115" y1="175" x2="115" y2="393" stroke="#C62828" stroke-width="1.5" opacity="0.35"/>
+    <line x1="210" y1="175" x2="210" y2="393" stroke="#C62828" stroke-width="1.5" opacity="0.35"/>
+    <line x1="308" y1="175" x2="308" y2="393" stroke="#C62828" stroke-width="1.5" opacity="0.35"/>
+
+    <!-- Safety net pillars -->
+    <rect x="16" y="168" width="20" height="225" rx="9" fill="#4FC3F7"/>
+    <rect x="378" y="168" width="20" height="225" rx="9" fill="#4FC3F7"/>
+
+    <!-- Entry steps / ramp (left) -->
+    <rect x="-52" y="295" width="56" height="103" rx="10" fill="#EF5350"/>
+    <line x1="-52" y1="325" x2="4" y2="325" stroke="#B71C1C" stroke-width="3"/>
+    <line x1="-52" y1="358" x2="4" y2="358" stroke="#B71C1C" stroke-width="3"/>
+
+    <!-- SLIDE TOWER (right) -->
+    <rect x="410" y="100" width="168" height="298" rx="20" fill="#1565C0"/>
+    <ellipse cx="494" cy="100" rx="92" ry="48" fill="#1565C0"/>
+    <ellipse cx="494" cy="100" rx="68" ry="34" fill="#1E88E5"/>
+
+    <!-- Climbing holds on tower -->
+    <circle cx="442" cy="195" r="14" fill="#42A5F5"/>
+    <circle cx="484" cy="228" r="14" fill="#42A5F5"/>
+    <circle cx="526" cy="195" r="14" fill="#42A5F5"/>
+    <circle cx="564" cy="228" r="14" fill="#64B5F6"/>
+    <circle cx="462" cy="163" r="14" fill="#64B5F6"/>
+    <circle cx="544" cy="163" r="14" fill="#42A5F5"/>
+
+    <!-- Slide chute (curves down to the right) -->
+    <path d="M 568 238 C 628 290 662 345 678 400"
+          stroke="#E64A19" stroke-width="46" fill="none" stroke-linecap="round"/>
+    <path d="M 568 238 C 628 290 662 345 678 400"
+          stroke="#FF7043" stroke-width="28" fill="none" stroke-linecap="round"/>
+    <path d="M 562 224 C 618 278 655 332 668 388"
+          stroke="#BF360C" stroke-width="5" fill="none" stroke-linecap="round"/>
+    <path d="M 582 250 C 642 300 672 358 690 410"
+          stroke="#BF360C" stroke-width="5" fill="none" stroke-linecap="round"/>
+  </g>
+
+  <!-- ─── KID 1: jumping inside (arms up, mid-air) ─────────────── -->
+  <g transform="translate(415,330)" fill="#5D4037">
+    <circle cx="0" cy="-88" r="20"/>
+    <line x1="0" y1="-68" x2="0" y2="-20" stroke="#5D4037" stroke-width="14" stroke-linecap="round"/>
+    <line x1="0" y1="-55" x2="-30" y2="-82" stroke="#5D4037" stroke-width="11" stroke-linecap="round"/>
+    <line x1="0" y1="-55" x2="30" y2="-82" stroke="#5D4037" stroke-width="11" stroke-linecap="round"/>
+    <line x1="0" y1="-20" x2="-16" y2="14" stroke="#5D4037" stroke-width="11" stroke-linecap="round"/>
+    <line x1="0" y1="-20" x2="16" y2="14" stroke="#5D4037" stroke-width="11" stroke-linecap="round"/>
+    <!-- smile -->
+    <path d="M -7 -83 Q 0 -76 7 -83" stroke="white" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+  </g>
+
+  <!-- ─── KID 2: jumping inside (arms wide) ────────────────────── -->
+  <g transform="translate(520,318)" fill="#795548">
+    <circle cx="0" cy="-78" r="17"/>
+    <line x1="0" y1="-61" x2="0" y2="-18" stroke="#795548" stroke-width="12" stroke-linecap="round"/>
+    <line x1="0" y1="-50" x2="-32" y2="-44" stroke="#795548" stroke-width="10" stroke-linecap="round"/>
+    <line x1="0" y1="-50" x2="32" y2="-38" stroke="#795548" stroke-width="10" stroke-linecap="round"/>
+    <line x1="0" y1="-18" x2="-18" y2="12" stroke="#795548" stroke-width="10" stroke-linecap="round"/>
+    <line x1="0" y1="-18" x2="18" y2="12" stroke="#795548" stroke-width="10" stroke-linecap="round"/>
+    <path d="M -6 -73 Q 0 -66 6 -73" stroke="white" stroke-width="2" fill="none" stroke-linecap="round"/>
+  </g>
+
+  <!-- ─── KID 3: on slide, sliding down ──────────────────────────── -->
+  <g transform="translate(956,400) rotate(20)" fill="#6D4C41">
+    <circle cx="0" cy="-52" r="16"/>
+    <line x1="0" y1="-36" x2="0" y2="5" stroke="#6D4C41" stroke-width="12" stroke-linecap="round"/>
+    <line x1="0" y1="-22" x2="-22" y2="-15" stroke="#6D4C41" stroke-width="9" stroke-linecap="round"/>
+    <line x1="0" y1="-22" x2="22" y2="-18" stroke="#6D4C41" stroke-width="9" stroke-linecap="round"/>
+    <line x1="0" y1="5" x2="-12" y2="26" stroke="#6D4C41" stroke-width="9" stroke-linecap="round"/>
+    <line x1="0" y1="5" x2="12" y2="26" stroke="#6D4C41" stroke-width="9" stroke-linecap="round"/>
+    <path d="M -5 -47 Q 0 -41 5 -47" stroke="white" stroke-width="2" fill="none" stroke-linecap="round"/>
+  </g>
+
+  <!-- ─── KID 4: running toward bounce house on grass ─────────── -->
+  <g transform="translate(240,440)" fill="#4E342E">
+    <circle cx="0" cy="-60" r="15"/>
+    <line x1="0" y1="-45" x2="0" y2="-8" stroke="#4E342E" stroke-width="11" stroke-linecap="round"/>
+    <line x1="0" y1="-34" x2="-22" y2="-18" stroke="#4E342E" stroke-width="9" stroke-linecap="round"/>
+    <line x1="0" y1="-34" x2="20" y2="-48" stroke="#4E342E" stroke-width="9" stroke-linecap="round"/>
+    <line x1="0" y1="-8" x2="-18" y2="16" stroke="#4E342E" stroke-width="9" stroke-linecap="round"/>
+    <line x1="0" y1="-8" x2="15" y2="8" stroke="#4E342E" stroke-width="9" stroke-linecap="round"/>
+    <path d="M -5 -55 Q 0 -49 5 -55" stroke="#FFE0B2" stroke-width="2" fill="none" stroke-linecap="round"/>
+  </g>
+
+  <!-- ─── PARENTS chatting on the right ─────────────────────────── -->
+  <!-- Parent 1 (adult, standing, holding cup) -->
+  <g transform="translate(1118,375)" fill="#4E342E">
+    <circle cx="0" cy="-118" r="24"/>
+    <ellipse cx="-3" cy="-135" rx="19" ry="9" fill="#212121"/>
+    <line x1="0" y1="-94" x2="0" y2="-26" stroke="#4E342E" stroke-width="18" stroke-linecap="round"/>
+    <line x1="0" y1="-80" x2="-32" y2="-60" stroke="#4E342E" stroke-width="12" stroke-linecap="round"/>
+    <rect x="-46" y="-65" width="15" height="20" rx="4" fill="#FF8F00"/>
+    <line x1="0" y1="-80" x2="28" y2="-66" stroke="#4E342E" stroke-width="12" stroke-linecap="round"/>
+    <line x1="0" y1="-26" x2="-14" y2="50" stroke="#4E342E" stroke-width="14" stroke-linecap="round"/>
+    <line x1="0" y1="-26" x2="14" y2="50" stroke="#4E342E" stroke-width="14" stroke-linecap="round"/>
+    <path d="M -8 -113 Q 0 -105 8 -113" stroke="white" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+  </g>
+
+  <!-- Parent 2 (turned slightly, gesturing, talking) -->
+  <g transform="translate(1200,380)" fill="#37474F">
+    <circle cx="0" cy="-112" r="22"/>
+    <ellipse cx="2" cy="-128" rx="17" ry="8" fill="#5D4037"/>
+    <line x1="0" y1="-90" x2="0" y2="-26" stroke="#37474F" stroke-width="16" stroke-linecap="round"/>
+    <line x1="0" y1="-76" x2="-28" y2="-62" stroke="#37474F" stroke-width="11" stroke-linecap="round"/>
+    <line x1="0" y1="-74" x2="30" y2="-88" stroke="#37474F" stroke-width="11" stroke-linecap="round"/>
+    <line x1="0" y1="-26" x2="-13" y2="44" stroke="#37474F" stroke-width="13" stroke-linecap="round"/>
+    <line x1="0" y1="-26" x2="13" y2="44" stroke="#37474F" stroke-width="13" stroke-linecap="round"/>
+    <path d="M -7 -107 Q 0 -100 7 -107" stroke="white" stroke-width="2.2" fill="none" stroke-linecap="round"/>
+  </g>
+
+  <!-- ─── GROUND SHADOWS for depth ─────────────────────────────── -->
+  <ellipse cx="575" cy="458" rx="320" ry="16" fill="#1B5E20" opacity="0.30"/>
+  <ellipse cx="415" cy="452" rx="26" ry="8" fill="#1B5E20" opacity="0.38"/>
+  <ellipse cx="520" cy="450" rx="22" ry="7" fill="#1B5E20" opacity="0.38"/>
+  <ellipse cx="240" cy="455" rx="22" ry="7" fill="#1B5E20" opacity="0.32"/>
+  <ellipse cx="1162" cy="448" rx="65" ry="12" fill="#1B5E20" opacity="0.30"/>
+
+  <!-- ─── SUNLIGHT SPARKLES ─────────────────────────────────────── -->
+  <g fill="#FFE566" opacity="0.55">
+    <polygon points="385,148 388,142 391,148 385,145 391,145" transform="scale(1.4) translate(-60,0)"/>
+    <polygon points="720,110 723,104 726,110 720,107 726,107"/>
+    <polygon points="860,170 863,164 866,170 860,167 866,167" transform="scale(0.9)"/>
+  </g>
+</svg>
