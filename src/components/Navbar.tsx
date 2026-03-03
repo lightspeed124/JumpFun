@@ -13,33 +13,21 @@ export default function Navbar() {
           <div className="hidden md:flex items-center gap-6">
             <Link
               href="/browse"
-              className="text-sm text-gray-600 hover:text-gray-900 font-medium"
+              className="text-sm text-gray-600 hover:text-gray-900 font-medium transition-colors"
             >
               Browse All
             </Link>
             <Link
-              href="/browse?category=Bounce+Houses"
-              className="text-sm text-gray-600 hover:text-gray-900 font-medium"
+              href="/plan"
+              className="text-sm text-gray-600 hover:text-gray-900 font-medium transition-colors"
             >
-              Bounce Houses
-            </Link>
-            <Link
-              href="/browse?category=Water+Slides"
-              className="text-sm text-gray-600 hover:text-gray-900 font-medium"
-            >
-              Water Slides
-            </Link>
-            <Link
-              href="/browse?category=Combos"
-              className="text-sm text-gray-600 hover:text-gray-900 font-medium"
-            >
-              Combos
+              AI Planner
             </Link>
             <Link
               href="/plan"
-              className="text-sm font-semibold text-indigo-600 bg-indigo-50 hover:bg-indigo-100 px-3 py-1.5 rounded-full transition-colors"
+              className="text-sm font-semibold text-white bg-indigo-600 hover:bg-indigo-700 px-4 py-1.5 rounded-full transition-colors"
             >
-              🎯 Get Matched
+              Get Matched
             </Link>
           </div>
 
