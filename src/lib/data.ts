@@ -93,6 +93,7 @@ export interface ListingFilters {
   businessSite?: string;
   categoryName?: string;
   search?: string;
+  theme?: string;
   minPrice?: number;
   maxPrice?: number;
   city?: string;
@@ -104,6 +105,7 @@ export async function getListings(filters: ListingFilters = {}): Promise<RentalI
 
   if (filters.businessSite) query = query.eq("business_site", filters.businessSite);
   if (filters.categoryName) query = query.ilike("category_name", filters.categoryName);
+  if (filters.theme) query = query.ilike("title", `%${filters.theme}%`);
   if (filters.search) {
     const q = filters.search;
     query = query.or(`title.ilike.%${q}%,description.ilike.%${q}%,category_name.ilike.%${q}%`);
