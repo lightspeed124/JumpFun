@@ -45,8 +45,8 @@ export default async function HomePage() {
               Bounce Houses &nbsp;·&nbsp; Water Slides &nbsp;·&nbsp; Obstacle Courses &nbsp;·&nbsp; Combo Jumpers
             </p>
             <h1 className="text-4xl md:text-[54px] font-extrabold text-white leading-tight drop-shadow-lg">
-              Your kids&rsquo; next party is about to<br className="hidden sm:block" />
-              <span className="text-yellow-300"> get a whole lot more fun</span>
+              More Bounce Houses,<br className="hidden sm:block" />
+              <span className="text-yellow-300"> Booked in Seconds.</span>
             </h1>
             <p className="text-white/75 text-base md:text-lg font-medium max-w-xl mx-auto leading-relaxed">
               Browse hundreds of bounce houses and inflatables near you —<br className="hidden md:block" />
