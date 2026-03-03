@@ -26,7 +26,7 @@ export default function RootLayout({
                 <span className="text-white font-bold text-lg">JumpFun</span>
               </div>
               <p className="text-sm text-gray-400">
-                The easiest way to find and book bounce houses, water slides, and party inflatables near you.
+                Your marketplace for bounce houses and party rentals from top-rated local companies.
               </p>
             </div>
             <div>
