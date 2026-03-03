@@ -55,7 +55,7 @@ export default async function HomePage() {
           </div>
 
           {/* Search bar */}
-          <div className="w-full max-w-3xl">
+          <div className="w-full max-w-5xl px-4">
             <HeroSearch />
           </div>
 
@@ -71,11 +71,15 @@ export default async function HomePage() {
         </div>
       </section>
 
+      {/* ── City rentals band ─────────────────────────────────────────────── */}
+      <div className="border-t border-b border-gray-200 bg-white py-5">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <CityRentalsBanner />
+        </div>
+      </div>
+
       {/* ── Category rows ─────────────────────────────────────────────────── */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-12">
-
-        {/* City rentals header */}
-        <CityRentalsBanner />
         {rows.map((row) => (
           <section key={row.category_slug}>
 

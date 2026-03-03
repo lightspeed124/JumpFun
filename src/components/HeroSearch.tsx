@@ -67,7 +67,7 @@ export default function HeroSearch() {
   return (
     <form onSubmit={handleSearch} className="w-full">
       {/* overflow-visible so the city dropdown can escape the pill */}
-      <div className="flex items-center bg-white rounded-full shadow-[0_8px_40px_rgba(0,0,0,0.28)] border border-white/20 max-w-3xl mx-auto">
+      <div className="flex items-center bg-white rounded-full shadow-[0_8px_40px_rgba(0,0,0,0.28)] border border-white/20 w-full">
 
         {/* What */}
         <div className="flex-1 px-7 py-4 min-w-0">
