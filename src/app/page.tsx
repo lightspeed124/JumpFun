@@ -120,7 +120,7 @@ export default async function HomePage() {
                 <div className="w-60 shrink-0">
                   <Link
                     href={`/browse?category=${encodeURIComponent(row.category_name)}`}
-                    className="flex h-full min-h-[280px] flex-col items-center justify-center gap-3 rounded-2xl border-2 border-dashed border-gray-200 text-gray-400 hover:border-brand-blue-border hover:text-brand-blue transition-colors"
+                    className="flex aspect-[4/3] flex-col items-center justify-center gap-3 rounded-2xl border-2 border-dashed border-gray-200 text-gray-400 hover:border-brand-blue-border hover:text-brand-blue transition-colors"
                   >
                     <span className="text-4xl">→</span>
                     <span className="text-sm font-semibold text-center px-4">
