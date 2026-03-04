@@ -11,16 +11,21 @@ export default function ItemCard({ item }: { item: RentalItem }) {
     <Link href={`/items/${item.listing_id}`} className="group block">
       <div className="bg-white rounded-2xl overflow-hidden border border-gray-100 shadow-sm hover:shadow-md transition-all duration-200 hover:-translate-y-0.5">
         {/* Image */}
-        <div className="relative h-52 w-full overflow-hidden bg-gray-100">
+        <div className="relative h-52 w-full overflow-hidden bg-gray-200">
           {imgSrc ? (
-            <Image
-              src={imgSrc}
-              alt={item.title}
-              fill
-              className="object-cover group-hover:scale-105 transition-transform duration-300"
-              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-              unoptimized // images are from rental company servers, not Unsplash
-            />
+            <>
+              <Image
+                src={imgSrc}
+                alt={item.title}
+                fill
+                className="object-cover object-top group-hover:scale-105 transition-transform duration-300"
+                style={{ filter: "saturate(0.82) contrast(1.06) brightness(1.03)" }}
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                unoptimized
+              />
+              {/* bottom gradient to unify inconsistent photos */}
+              <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent pointer-events-none" />
+            </>
           ) : (
             <div className="w-full h-full flex items-center justify-center text-5xl bg-indigo-50">
               🎪
