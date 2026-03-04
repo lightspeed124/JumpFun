@@ -15,6 +15,12 @@ export default function FavoriteButton({ itemId, size = "md", className = "", sh
 
   useEffect(() => {
     setSaved(isFavorite(itemId));
+
+    function onFavChange() {
+      setSaved(isFavorite(itemId));
+    }
+    window.addEventListener("favorites-changed", onFavChange);
+    return () => window.removeEventListener("favorites-changed", onFavChange);
   }, [itemId]);
 
   function handleClick(e: React.MouseEvent) {
