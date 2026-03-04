@@ -31,7 +31,7 @@ export default async function ItemDetailPage({
     getSimilarListings(item.category_name, item.business_site, 3),
   ]);
 
-  const heroImg = item.primary_image_big_url ?? item.primary_image_url ?? images[0]?.image_big_url ?? images[0]?.image_url ?? null;
+  const heroImg = item.primary_image_big_url || item.primary_image_url || images[0]?.image_big_url || images[0]?.image_url || null;
   const galleryImgs = images.slice(1, 3);
   const basePrice = item.base_price_amount ?? item.min_price_amount;
 
