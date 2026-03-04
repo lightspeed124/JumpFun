@@ -18,7 +18,7 @@ export default function ItemCard({ item }: { item: RentalItem }) {
                 src={imgSrc}
                 alt={item.title}
                 fill
-                className="object-cover object-top group-hover:scale-105 transition-transform duration-300"
+                className="object-cover group-hover:scale-105 transition-transform duration-300"
                 style={{ filter: "saturate(0.82) contrast(1.06) brightness(1.03)" }}
                 sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                 unoptimized
