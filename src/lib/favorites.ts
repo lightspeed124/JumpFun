@@ -30,10 +30,14 @@ export function removeFavorite(itemId: string): void {
 
 /** Toggle favorite status; returns the new state (true = now saved). */
 export function toggleFavorite(itemId: string): boolean {
+  let next: boolean;
   if (isFavorite(itemId)) {
     removeFavorite(itemId);
-    return false;
+    next = false;
+  } else {
+    addFavorite(itemId);
+    next = true;
   }
-  addFavorite(itemId);
-  return true;
+  window.dispatchEvent(new CustomEvent("favorites-changed", { detail: { itemId } }));
+  return next;
 }

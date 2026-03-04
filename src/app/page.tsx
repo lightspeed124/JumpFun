@@ -37,37 +37,39 @@ export default async function HomePage() {
           className="object-cover object-center"
           priority
         />
-        {/* Very light veil so edges don't feel too raw */}
-        <div className="absolute inset-0 bg-white/10" />
 
-        <div className="relative h-full flex flex-col items-center justify-center px-4 text-center gap-6">
-          {/* ── Frosted glass card ── */}
-          <div className="bg-white/80 backdrop-blur-md rounded-3xl shadow-xl px-8 py-8 md:py-10 w-full max-w-2xl space-y-5">
-            <p className="text-indigo-500 text-[11px] font-bold tracking-[0.22em] uppercase">
-              Bounce Houses &nbsp;·&nbsp; Water Slides &nbsp;·&nbsp; Obstacle Courses &nbsp;·&nbsp; Combo Jumpers
-            </p>
-            <h1 className="text-4xl md:text-[50px] font-extrabold text-gray-900 leading-tight">
-              More Bounce Houses,<br className="hidden sm:block" />
-              <span className="text-indigo-600"> Booked in Seconds.</span>
-            </h1>
-            <p className="text-gray-500 text-base md:text-lg font-medium leading-relaxed">
-              Browse hundreds of bounce houses and inflatables near you —<br className="hidden md:block" />
-              pick your favorite and book it in minutes.
-            </p>
+        {/* Soft dark halo behind the text — no hard edges, image shows fully on sides */}
+        <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+          <div className="w-[700px] h-[440px] bg-black/40 rounded-full blur-3xl" />
+        </div>
 
-            {/* Search bar sits inside the card */}
+        <div className="relative h-full flex flex-col items-center justify-center px-4 text-center gap-5">
+          <p className="text-white/85 text-[11px] font-bold tracking-[0.22em] uppercase drop-shadow">
+            Bounce Houses &nbsp;·&nbsp; Water Slides &nbsp;·&nbsp; Obstacle Courses &nbsp;·&nbsp; Combo Jumpers
+          </p>
+          <h1 className="text-4xl md:text-[54px] font-extrabold text-white leading-tight drop-shadow-lg">
+            More Bounce Houses,<br className="hidden sm:block" />
+            <span className="text-yellow-300"> Booked in Seconds.</span>
+          </h1>
+          <p className="text-white/80 text-base md:text-lg font-medium max-w-xl leading-relaxed drop-shadow">
+            Browse hundreds of bounce houses and inflatables near you —<br className="hidden md:block" />
+            pick your favorite and book it in minutes.
+          </p>
+
+          {/* Search bar — white pill stands on its own */}
+          <div className="w-full max-w-2xl mt-1">
             <HeroSearch />
-
-            <p className="text-sm text-gray-400">
-              Not sure what to pick?{" "}
-              <Link
-                href="/plan"
-                className="text-indigo-600 font-semibold hover:text-indigo-500"
-              >
-                Try our free AI Planner →
-              </Link>
-            </p>
           </div>
+
+          <p className="text-sm text-white/70 drop-shadow">
+            Not sure what to pick?{" "}
+            <Link
+              href="/plan"
+              className="text-yellow-300 font-semibold hover:text-yellow-200"
+            >
+              Try our free AI Planner →
+            </Link>
+          </p>
         </div>
       </section>
 
