@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { getListings, getCompanies, getDistinctCategories } from "@/lib/data";
 import ItemCard from "@/components/ItemCard";
+import BrowseSearch from "@/components/BrowseSearch";
 
 interface SearchParams {
   category?: string;
@@ -246,6 +247,18 @@ export default async function BrowsePage({
 
         {/* ── Results ── */}
         <div className="flex-1 min-w-0">
+
+          {/* Search bar */}
+          <div className="mb-5">
+            <BrowseSearch
+              initialQuery={q}
+              preserveParams={
+                Object.fromEntries(
+                  Object.entries(params as Record<string, string>).filter(([k]) => k !== "q")
+                )
+              }
+            />
+          </div>
 
           {/* Header */}
           <div className="mb-4">
