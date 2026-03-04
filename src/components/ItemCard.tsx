@@ -18,7 +18,7 @@ export default function ItemCard({ item }: { item: RentalItem }) {
                 src={imgSrc}
                 alt={item.title}
                 fill
-                className="object-cover object-top group-hover:scale-105 transition-transform duration-300"
+                className="object-cover group-hover:scale-105 transition-transform duration-300"
                 style={{ filter: "saturate(0.82) contrast(1.06) brightness(1.03)" }}
                 sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                 unoptimized
@@ -27,7 +27,7 @@ export default function ItemCard({ item }: { item: RentalItem }) {
               <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent pointer-events-none" />
             </>
           ) : (
-            <div className="w-full h-full flex items-center justify-center text-5xl bg-indigo-50">
+            <div className="w-full h-full flex items-center justify-center text-5xl bg-brand-blue-subtle">
               🎪
             </div>
           )}
@@ -46,7 +46,7 @@ export default function ItemCard({ item }: { item: RentalItem }) {
         {/* Details */}
         <div className="p-4">
           <div className="flex justify-between items-start gap-2 mb-1">
-            <h3 className="font-semibold text-gray-900 text-sm leading-tight group-hover:text-indigo-600 transition-colors line-clamp-2">
+            <h3 className="font-semibold text-gray-900 text-sm leading-tight group-hover:text-brand-blue transition-colors line-clamp-2">
               {item.title}
             </h3>
             <div className="text-right shrink-0">

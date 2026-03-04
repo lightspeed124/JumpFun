@@ -31,7 +31,7 @@ export default async function ItemDetailPage({
     getSimilarListings(item.category_name, item.business_site, 3),
   ]);
 
-  const heroImg = item.primary_image_big_url ?? item.primary_image_url ?? images[0]?.image_big_url ?? images[0]?.image_url ?? null;
+  const heroImg = item.primary_image_big_url || item.primary_image_url || images[0]?.image_big_url || images[0]?.image_url || null;
   const galleryImgs = images.slice(1, 3);
   const basePrice = item.base_price_amount ?? item.min_price_amount;
 
@@ -59,7 +59,7 @@ export default async function ItemDetailPage({
               {heroImg ? (
                 <Image src={heroImg} alt={item.title} fill className="object-contain" sizes="(max-width: 1024px) 100vw, 66vw" priority unoptimized />
               ) : (
-                <div className="w-full h-full flex items-center justify-center text-8xl bg-indigo-50">🎪</div>
+                <div className="w-full h-full flex items-center justify-center text-8xl bg-brand-blue-subtle">🎪</div>
               )}
               <div className="absolute top-4 right-4">
                 <FavoriteButton itemId={String(listingId)} size="lg" />
@@ -73,13 +73,13 @@ export default async function ItemDetailPage({
           </div>
 
           {/* Title */}
-          <span className="text-xs font-medium text-indigo-600 bg-indigo-50 px-2 py-1 rounded-full mb-2 inline-block">
+          <span className="text-xs font-medium text-brand-blue bg-brand-blue-subtle px-2 py-1 rounded-full mb-2 inline-block">
             {item.category_name}
           </span>
           <h1 className="text-3xl font-bold text-gray-900 mb-2">{item.title}</h1>
           {company && (
             <Link href={`/companies/${encodeURIComponent(item.business_site)}`}
-              className="text-sm text-indigo-600 hover:text-indigo-700 font-medium">
+              className="text-sm text-brand-blue hover:text-brand-blue-dark font-medium">
               {item.business_name} →
             </Link>
           )}
@@ -133,7 +133,7 @@ export default async function ItemDetailPage({
             <div className="border border-gray-200 rounded-2xl p-6">
               <h2 className="text-lg font-bold text-gray-900 mb-4">Provided by</h2>
               <div className="flex items-start gap-4">
-                <div className="w-12 h-12 rounded-full bg-indigo-100 flex items-center justify-center text-xl font-bold text-indigo-600 shrink-0">
+                <div className="w-12 h-12 rounded-full bg-brand-blue-subtle flex items-center justify-center text-xl font-bold text-brand-blue shrink-0">
                   {company.business_name.charAt(0)}
                 </div>
                 <div className="flex-1 min-w-0">
@@ -143,7 +143,7 @@ export default async function ItemDetailPage({
                     {company.service_area_count > 0 && <span>{company.service_area_count} service areas</span>}
                   </div>
                   <Link href={`/companies/${encodeURIComponent(item.business_site)}`}
-                    className="inline-block mt-3 text-sm font-medium text-indigo-600 hover:text-indigo-700">
+                    className="inline-block mt-3 text-sm font-medium text-brand-blue hover:text-brand-blue-dark">
                     View all {company.business_name} rentals →
                   </Link>
                 </div>
@@ -187,7 +187,7 @@ export default async function ItemDetailPage({
               <div className="flex items-center gap-2 text-xs text-gray-500"><span>✓</span><span>Delivery & setup included</span></div>
               {item.source_url && (
                 <a href={item.source_url} target="_blank" rel="noopener noreferrer"
-                  className="flex items-center gap-2 text-xs text-indigo-500 hover:text-indigo-700">
+                  className="flex items-center gap-2 text-xs text-brand-blue hover:text-brand-blue-dark">
                   <span>🔗</span><span>View on company website</span>
                 </a>
               )}
@@ -205,7 +205,7 @@ export default async function ItemDetailPage({
               <p className="text-sm text-gray-500 mt-1">Add more items from this company to your booking</p>
             </div>
             <Link href={`/companies/${encodeURIComponent(item.business_site)}`}
-              className="text-indigo-600 hover:text-indigo-700 text-sm font-medium">View all →</Link>
+              className="text-brand-blue hover:text-brand-blue-dark text-sm font-medium">View all →</Link>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
             {complementary.map((i) => <ItemCard key={i.listing_id} item={i} />)}
@@ -222,7 +222,7 @@ export default async function ItemDetailPage({
               <p className="text-sm text-gray-500 mt-1">More {item.category_name} from other local companies</p>
             </div>
             <Link href={`/browse?category=${encodeURIComponent(item.category_name)}`}
-              className="text-indigo-600 hover:text-indigo-700 text-sm font-medium">Browse all →</Link>
+              className="text-brand-blue hover:text-brand-blue-dark text-sm font-medium">Browse all →</Link>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
             {similar.map((i) => <ItemCard key={i.listing_id} item={i} />)}

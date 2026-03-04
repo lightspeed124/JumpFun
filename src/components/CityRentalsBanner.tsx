@@ -75,14 +75,14 @@ export default function CityRentalsBanner() {
 
       {editing ? (
         <span className="relative inline-block">
-          <span className="inline-flex items-center border-2 border-indigo-500 rounded-lg px-4 py-1.5">
+          <span className="inline-flex items-center border-2 border-brand-blue rounded-lg px-4 py-1.5">
             <input
               ref={inputRef}
               value={inputValue}
               onChange={(e) => setInputValue(e.target.value)}
               onKeyDown={handleKeyDown}
               placeholder="Enter city…"
-              className="outline-none text-indigo-600 font-semibold text-base bg-transparent w-40"
+              className="outline-none text-brand-blue font-semibold text-base bg-transparent w-40"
             />
           </span>
 
@@ -92,7 +92,7 @@ export default function CityRentalsBanner() {
                 <li
                   key={i}
                   onMouseDown={() => selectSuggestion(s)}
-                  className="px-4 py-3 hover:bg-indigo-50 cursor-pointer"
+                  className="px-4 py-3 hover:bg-brand-blue-subtle cursor-pointer"
                 >
                   <div className="text-sm font-semibold text-gray-900">{s.name}</div>
                   {s.state && (
@@ -110,10 +110,10 @@ export default function CityRentalsBanner() {
           onClick={startEditing}
           disabled={loading}
           title="Click to change city"
-          className="inline-flex items-center gap-1.5 text-indigo-600 font-bold text-base border-b-2 border-dashed border-indigo-400 hover:border-indigo-600 hover:text-indigo-800 transition-colors disabled:opacity-40 pb-0.5"
+          className="inline-flex items-center gap-1.5 text-brand-blue font-bold text-base border-b-2 border-dashed border-brand-blue-border hover:border-brand-blue hover:text-brand-blue-dark transition-colors disabled:opacity-40 pb-0.5"
         >
           {loading ? (
-            <span className="inline-block w-24 h-5 rounded bg-indigo-100 animate-pulse" />
+            <span className="inline-block w-24 h-5 rounded bg-brand-blue-subtle animate-pulse" />
           ) : (
             <>
               {city}

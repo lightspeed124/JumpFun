@@ -144,12 +144,12 @@ export default async function BrowsePage({
                         href={toggleFilterHref("category", c.category_name)}
                         className={`flex items-center justify-between w-full px-3 py-2 rounded-lg text-sm transition-colors ${
                           active
-                            ? "bg-indigo-600 text-white font-semibold"
+                            ? "bg-brand-blue text-white font-semibold"
                             : "text-gray-700 hover:bg-gray-100"
                         }`}
                       >
                         <span>{c.category_name}</span>
-                        <span className={`text-xs tabular-nums ${active ? "text-indigo-200" : "text-gray-400"}`}>
+                        <span className={`text-xs tabular-nums ${active ? "text-white/60" : "text-gray-400"}`}>
                           {c.listing_count}
                         </span>
                       </Link>
@@ -171,7 +171,7 @@ export default async function BrowsePage({
                       href={toggleFilterHref("theme", t)}
                       className={`px-3 py-1 rounded-full text-xs font-medium transition-colors ${
                         active
-                          ? "bg-indigo-600 text-white"
+                          ? "bg-brand-blue text-white"
                           : "bg-gray-100 text-gray-600 hover:bg-gray-200"
                       }`}
                     >
@@ -194,7 +194,7 @@ export default async function BrowsePage({
                         href={setPriceHref(r.min, r.max)}
                         className={`flex w-full px-3 py-2 rounded-lg text-sm transition-colors ${
                           active
-                            ? "bg-indigo-600 text-white font-semibold"
+                            ? "bg-brand-blue text-white font-semibold"
                             : "text-gray-700 hover:bg-gray-100"
                         }`}
                       >
@@ -218,12 +218,12 @@ export default async function BrowsePage({
                         href={toggleFilterHref("company", c.business_site)}
                         className={`flex items-center justify-between w-full px-3 py-2 rounded-lg text-sm transition-colors ${
                           active
-                            ? "bg-indigo-600 text-white font-semibold"
+                            ? "bg-brand-blue text-white font-semibold"
                             : "text-gray-700 hover:bg-gray-100"
                         }`}
                       >
                         <span className="truncate">{c.business_name}</span>
-                        <span className={`text-xs tabular-nums ml-1 shrink-0 ${active ? "text-indigo-200" : "text-gray-400"}`}>
+                        <span className={`text-xs tabular-nums ml-1 shrink-0 ${active ? "text-white/60" : "text-gray-400"}`}>
                           {c.listing_count}
                         </span>
                       </Link>
@@ -296,7 +296,7 @@ export default async function BrowsePage({
               </p>
               <Link
                 href="/browse"
-                className="inline-block bg-indigo-600 text-white font-semibold px-5 py-2.5 rounded-xl hover:bg-indigo-700 transition-colors text-sm"
+                className="inline-block bg-brand-blue text-white font-semibold px-5 py-2.5 rounded-xl hover:bg-brand-blue-dark transition-colors text-sm"
               >
                 Clear filters
               </Link>

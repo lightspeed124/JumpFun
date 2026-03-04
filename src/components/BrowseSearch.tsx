@@ -39,7 +39,7 @@ export default function BrowseSearch({
         <div className="pr-1.5 shrink-0">
           <button
             type="submit"
-            className="bg-rose-500 hover:bg-rose-600 active:bg-rose-700 text-white rounded-full w-10 h-10 flex items-center justify-center transition-colors"
+            className="bg-brand-pink hover:bg-brand-pink-dark active:bg-brand-pink-darker text-white rounded-full w-10 h-10 flex items-center justify-center transition-colors"
             aria-label="Search"
           >
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="w-4 h-4">

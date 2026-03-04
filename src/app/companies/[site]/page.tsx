@@ -45,7 +45,7 @@ export default async function CompanyPage({
         <div className="lg:col-span-2">
           {/* Header */}
           <div className="flex items-center gap-4 mb-8">
-            <div className="w-16 h-16 rounded-2xl bg-indigo-100 flex items-center justify-center text-2xl font-bold text-indigo-600 shrink-0">
+            <div className="w-16 h-16 rounded-2xl bg-brand-blue-subtle flex items-center justify-center text-2xl font-bold text-brand-blue shrink-0">
               {company.business_name.charAt(0)}
             </div>
             <div>
@@ -87,20 +87,20 @@ export default async function CompanyPage({
               <div className="space-y-2">
                 {company.phone && (
                   <a href={`tel:${company.phone.replace(/\D/g, "")}`}
-                    className="flex items-center gap-2 text-sm text-gray-700 hover:text-indigo-600">
+                    className="flex items-center gap-2 text-sm text-gray-700 hover:text-brand-blue">
                     <span>📞</span><span>{company.phone}</span>
                   </a>
                 )}
                 {company.email && (
                   <a href={`mailto:${company.email}`}
-                    className="flex items-center gap-2 text-sm text-gray-700 hover:text-indigo-600 truncate">
+                    className="flex items-center gap-2 text-sm text-gray-700 hover:text-brand-blue truncate">
                     <span>✉️</span><span className="truncate">{company.email}</span>
                   </a>
                 )}
                 {company.business_site && (
                   <a href={company.business_site.startsWith("http") ? company.business_site : `https://${company.business_site}`}
                     target="_blank" rel="noopener noreferrer"
-                    className="flex items-center gap-2 text-sm text-indigo-600 hover:text-indigo-700">
+                    className="flex items-center gap-2 text-sm text-brand-blue hover:text-brand-blue-dark">
                     <span>🌐</span><span>Visit website</span>
                   </a>
                 )}

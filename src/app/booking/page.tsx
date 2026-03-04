@@ -86,7 +86,7 @@ function BookingForm() {
         <div className="text-6xl mb-4">🎉</div>
         <h1 className="text-3xl font-bold text-gray-900 mb-3">Booking Received!</h1>
         <p className="text-gray-600 mb-2">
-          Your booking <span className="font-semibold text-indigo-600">#{bookingId}</span> has been received and will be confirmed shortly.
+          Your booking <span className="font-semibold text-brand-blue">#{bookingId}</span> has been received and will be confirmed shortly.
         </p>
         <p className="text-gray-500 text-sm mb-8">Confirmation sent to <span className="font-medium">{contactEmail}</span>.</p>
         <div className="bg-gray-50 rounded-2xl p-5 text-left mb-8 text-sm text-gray-700 space-y-1">
@@ -96,7 +96,7 @@ function BookingForm() {
           <div><span className="font-medium">Items:</span> {selectedItems.map((i) => i.title).join(", ")}</div>
         </div>
         <div className="flex gap-3 justify-center">
-          <Link href="/browse" className="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold px-6 py-3 rounded-xl">Browse More</Link>
+          <Link href="/browse" className="bg-brand-blue hover:bg-brand-blue-dark text-white font-semibold px-6 py-3 rounded-xl">Browse More</Link>
           <Link href="/favorites" className="border border-gray-200 text-gray-700 font-semibold px-6 py-3 rounded-xl hover:border-gray-300">Saved Items</Link>
         </div>
       </div>
@@ -109,7 +109,7 @@ function BookingForm() {
         <div className="text-6xl mb-4">♡</div>
         <h1 className="text-2xl font-bold text-gray-800 mb-2">No saved items</h1>
         <p className="text-gray-500 mb-6">Save items to your favourites first, then come back to book.</p>
-        <Link href="/browse" className="inline-block bg-indigo-600 hover:bg-indigo-700 text-white font-semibold px-6 py-3 rounded-xl">Browse Rentals</Link>
+        <Link href="/browse" className="inline-block bg-brand-blue hover:bg-brand-blue-dark text-white font-semibold px-6 py-3 rounded-xl">Browse Rentals</Link>
       </div>
     );
   }
@@ -120,7 +120,7 @@ function BookingForm() {
       <div className="flex items-center gap-2 mb-10">
         {[1, 2, 3].map((s) => (
           <div key={s} className="flex items-center gap-2 flex-1">
-            <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold shrink-0 ${s < step ? "bg-green-500 text-white" : s === step ? "bg-indigo-600 text-white" : "bg-gray-100 text-gray-400"}`}>
+            <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold shrink-0 ${s < step ? "bg-green-500 text-white" : s === step ? "bg-brand-blue text-white" : "bg-gray-100 text-gray-400"}`}>
               {s < step ? "✓" : s}
             </div>
             <div className="text-xs font-medium text-gray-500 hidden sm:block">
@@ -140,8 +140,8 @@ function BookingForm() {
             {allItems.map((item) => {
               const checked = selectedIds.includes(String(item.listing_id));
               return (
-                <label key={item.listing_id} className={`flex items-center gap-4 bg-white border-2 rounded-2xl p-4 cursor-pointer transition-all ${checked ? "border-indigo-500 shadow-sm" : "border-gray-100 hover:border-gray-200"}`}>
-                  <input type="checkbox" checked={checked} onChange={() => toggleItem(String(item.listing_id))} className="w-5 h-5 accent-indigo-600 shrink-0" />
+                <label key={item.listing_id} className={`flex items-center gap-4 bg-white border-2 rounded-2xl p-4 cursor-pointer transition-all ${checked ? "border-brand-blue shadow-sm" : "border-gray-100 hover:border-gray-200"}`}>
+                  <input type="checkbox" checked={checked} onChange={() => toggleItem(String(item.listing_id))} className="w-5 h-5 accent-brand-blue shrink-0" />
                   <div className="w-14 h-14 rounded-xl overflow-hidden bg-gray-100 relative shrink-0">
                     {item.primary_image_url
                       ? <Image src={item.primary_image_url} alt={item.title} fill className="object-cover" sizes="56px" unoptimized />
@@ -175,7 +175,7 @@ function BookingForm() {
           <div className="flex justify-between items-center">
             <span className="text-sm text-gray-500">{selectedIds.length} item{selectedIds.length !== 1 ? "s" : ""} selected</span>
             <button disabled={selectedIds.length === 0 || (multiCompany && !warningDismissed)} onClick={() => setStep(2)}
-              className="bg-indigo-600 hover:bg-indigo-700 disabled:bg-gray-300 disabled:cursor-not-allowed text-white font-bold px-8 py-3 rounded-xl transition-colors">
+              className="bg-brand-blue hover:bg-brand-blue-dark disabled:bg-gray-300 disabled:cursor-not-allowed text-white font-bold px-8 py-3 rounded-xl transition-colors">
               Next: Event Details →
             </button>
           </div>
@@ -191,13 +191,13 @@ function BookingForm() {
             <div>
               <label className="block text-sm font-semibold text-gray-700 mb-2">Event Date *</label>
               <input type="date" value={eventDate} onChange={(e) => setEventDate(e.target.value)}
-                className="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm outline-none focus:border-indigo-400" />
+                className="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm outline-none focus:border-brand-blue-border" />
             </div>
             <div>
               <label className="block text-sm font-semibold text-gray-700 mb-2">Rental Duration *</label>
               <div className="grid grid-cols-3 gap-3">
                 {(["oneDay", "overnight", "threeDays"] as const).map((d) => (
-                  <label key={d} className={`flex flex-col items-center border-2 rounded-2xl p-4 cursor-pointer ${duration === d ? "border-indigo-500 bg-indigo-50" : "border-gray-100 hover:border-gray-200"}`}>
+                  <label key={d} className={`flex flex-col items-center border-2 rounded-2xl p-4 cursor-pointer ${duration === d ? "border-brand-blue bg-brand-blue-subtle" : "border-gray-100 hover:border-gray-200"}`}>
                     <input type="radio" name="duration" value={d} checked={duration === d} onChange={() => setDuration(d)} className="sr-only" />
                     <div className="font-semibold text-gray-900 text-sm">{d === "oneDay" ? "One Day" : d === "overnight" ? "Overnight" : "3 Days"}</div>
                     <div className="text-xs text-gray-400 mt-0.5">{d === "oneDay" ? "10 am – 6 pm" : d === "overnight" ? "Eve through morning" : "Multi-day"}</div>
@@ -210,7 +210,7 @@ function BookingForm() {
               <div className="flex flex-wrap gap-2">
                 {SETUP_OPTIONS.map((opt) => (
                   <button key={opt} type="button" onClick={() => setSetupType(opt)}
-                    className={`px-4 py-2 rounded-xl text-sm font-medium border-2 transition-all ${setupType === opt ? "border-indigo-500 bg-indigo-50 text-indigo-700" : "border-gray-200 text-gray-600 hover:border-gray-300"}`}>
+                    className={`px-4 py-2 rounded-xl text-sm font-medium border-2 transition-all ${setupType === opt ? "border-brand-blue bg-brand-blue-subtle text-brand-blue-dark" : "border-gray-200 text-gray-600 hover:border-gray-300"}`}>
                     {opt}
                   </button>
                 ))}
@@ -219,13 +219,13 @@ function BookingForm() {
             <div>
               <label className="block text-sm font-semibold text-gray-700 mb-2">Delivery Address *</label>
               <textarea value={address} onChange={(e) => setAddress(e.target.value)} placeholder="Street address, city, state, ZIP" rows={3}
-                className="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm outline-none focus:border-indigo-400 resize-none" />
+                className="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm outline-none focus:border-brand-blue-border resize-none" />
             </div>
           </div>
           <div className="flex justify-between mt-8">
             <button onClick={() => setStep(1)} className="text-sm text-gray-500 hover:text-gray-700 font-medium px-4 py-2 rounded-xl hover:bg-gray-100">← Back</button>
             <button disabled={!eventDate || !setupType || !address.trim()} onClick={() => setStep(3)}
-              className="bg-indigo-600 hover:bg-indigo-700 disabled:bg-gray-300 disabled:cursor-not-allowed text-white font-bold px-8 py-3 rounded-xl transition-colors">
+              className="bg-brand-blue hover:bg-brand-blue-dark disabled:bg-gray-300 disabled:cursor-not-allowed text-white font-bold px-8 py-3 rounded-xl transition-colors">
               Next: Contact Info →
             </button>
           </div>
@@ -241,17 +241,17 @@ function BookingForm() {
             <div className="sm:col-span-2">
               <label className="block text-sm font-semibold text-gray-700 mb-2">Full Name *</label>
               <input type="text" value={contactName} onChange={(e) => setContactName(e.target.value)} placeholder="Jane Smith"
-                className="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm outline-none focus:border-indigo-400" />
+                className="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm outline-none focus:border-brand-blue-border" />
             </div>
             <div>
               <label className="block text-sm font-semibold text-gray-700 mb-2">Phone *</label>
               <input type="tel" value={contactPhone} onChange={(e) => setContactPhone(e.target.value)} placeholder="(415) 555-1234"
-                className="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm outline-none focus:border-indigo-400" />
+                className="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm outline-none focus:border-brand-blue-border" />
             </div>
             <div>
               <label className="block text-sm font-semibold text-gray-700 mb-2">Email *</label>
               <input type="email" value={contactEmail} onChange={(e) => setContactEmail(e.target.value)} placeholder="jane@example.com"
-                className="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm outline-none focus:border-indigo-400" />
+                className="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm outline-none focus:border-brand-blue-border" />
             </div>
           </div>
           <div className="bg-gray-50 rounded-2xl p-5 mb-6">
@@ -292,7 +292,7 @@ function BookingForm() {
           <div className="flex justify-between">
             <button onClick={() => setStep(2)} className="text-sm text-gray-500 hover:text-gray-700 font-medium px-4 py-2 rounded-xl hover:bg-gray-100">← Back</button>
             <button disabled={!contactName.trim() || !contactPhone.trim() || !contactEmail.trim()} onClick={handleSubmit}
-              className="bg-indigo-600 hover:bg-indigo-700 disabled:bg-gray-300 disabled:cursor-not-allowed text-white font-bold px-8 py-3 rounded-xl transition-colors">
+              className="bg-brand-blue hover:bg-brand-blue-dark disabled:bg-gray-300 disabled:cursor-not-allowed text-white font-bold px-8 py-3 rounded-xl transition-colors">
               Submit Booking Request
             </button>
           </div>

@@ -187,8 +187,8 @@ function OptionCard({
       onClick={onClick}
       className={`flex flex-col items-center gap-1 p-4 rounded-2xl border-2 text-center transition-all w-full ${
         selected
-          ? "border-indigo-500 bg-indigo-50 text-indigo-700"
-          : "border-gray-200 hover:border-indigo-300 text-gray-700 bg-white"
+          ? "border-brand-blue bg-brand-blue-subtle text-brand-blue-dark"
+          : "border-gray-200 hover:border-brand-blue-border text-gray-700 bg-white"
       }`}
     >
       <span className="text-3xl">{icon}</span>
@@ -255,7 +255,7 @@ function StepCard({
             type="button"
             onClick={onNext}
             disabled={nextDisabled}
-            className="bg-indigo-600 hover:bg-indigo-700 disabled:bg-gray-200 disabled:text-gray-400 text-white font-semibold px-6 py-3 rounded-xl text-sm transition-colors"
+            className="bg-brand-blue hover:bg-brand-blue-dark disabled:bg-gray-200 disabled:text-gray-400 text-white font-semibold px-6 py-3 rounded-xl text-sm transition-colors"
           >
             {nextLabel}
           </button>
@@ -312,7 +312,7 @@ function ResultCard({ scored }: { scored: ScoredItem }) {
               unoptimized
             />
           ) : (
-            <div className="w-full h-full flex items-center justify-center text-5xl bg-indigo-50">🎪</div>
+            <div className="w-full h-full flex items-center justify-center text-5xl bg-brand-blue-subtle">🎪</div>
           )}
           <div className="absolute top-3 left-3">
             <span className="bg-white/90 backdrop-blur-sm text-gray-700 text-xs font-medium px-2 py-1 rounded-full">
@@ -322,7 +322,7 @@ function ResultCard({ scored }: { scored: ScoredItem }) {
         </div>
         <div className="p-4">
           <div className="flex justify-between items-start gap-2 mb-2">
-            <h3 className="font-semibold text-gray-900 text-sm leading-tight group-hover:text-indigo-600 transition-colors">
+            <h3 className="font-semibold text-gray-900 text-sm leading-tight group-hover:text-brand-blue transition-colors">
               {item.title}
             </h3>
             <div className="text-right shrink-0">
@@ -432,11 +432,11 @@ export default function PlanPage() {
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
-      <div className="bg-gradient-to-br from-indigo-600 to-purple-600 text-white py-12">
+      <div className="bg-gradient-to-br from-brand-blue to-brand-blue-dark text-white py-12">
         <div className="max-w-2xl mx-auto px-4 text-center">
           <div className="text-4xl mb-3">🎯</div>
           <h1 className="text-3xl font-bold mb-2">Find Your Perfect Rental</h1>
-          <p className="text-indigo-200">
+          <p className="text-white/70">
             Answer a few quick questions and we&apos;ll recommend exactly what fits your event.
           </p>
         </div>
@@ -451,9 +451,9 @@ export default function PlanPage() {
                 <div
                   className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold transition-all ${
                     s < step
-                      ? "bg-indigo-600 text-white"
+                      ? "bg-brand-blue text-white"
                       : s === step
-                      ? "bg-indigo-600 text-white ring-4 ring-indigo-100"
+                      ? "bg-brand-blue text-white ring-4 ring-brand-blue-ring"
                       : "bg-gray-200 text-gray-400"
                   }`}
                 >
@@ -462,7 +462,7 @@ export default function PlanPage() {
                 {s < 4 && (
                   <div
                     className={`h-0.5 w-8 transition-all ${
-                      s < step ? "bg-indigo-600" : "bg-gray-200"
+                      s < step ? "bg-brand-blue" : "bg-gray-200"
                     }`}
                   />
                 )}
@@ -497,7 +497,7 @@ export default function PlanPage() {
                   value={form.city}
                   onChange={(e) => set("city", e.target.value)}
                   placeholder="e.g. Palo Alto, San Jose, 94025"
-                  className="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm outline-none focus:border-indigo-400 focus:ring-2 focus:ring-indigo-100"
+                  className="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm outline-none focus:border-brand-blue-border focus:ring-2 focus:ring-brand-blue-ring"
                 />
                 {form.city.trim() && (
                   <p className="text-xs mt-1.5 text-green-600 font-medium">
@@ -513,7 +513,7 @@ export default function PlanPage() {
                   type="date"
                   value={form.date}
                   onChange={(e) => set("date", e.target.value)}
-                  className="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm outline-none focus:border-indigo-400 focus:ring-2 focus:ring-indigo-100"
+                  className="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm outline-none focus:border-brand-blue-border focus:ring-2 focus:ring-brand-blue-ring"
                 />
               </div>
             </div>
@@ -675,8 +675,8 @@ export default function PlanPage() {
                   onClick={() => toggleTheme(t.value)}
                   className={`flex items-center gap-1.5 px-3 py-2 rounded-full border text-sm transition-all ${
                     form.themes.includes(t.value)
-                      ? "border-indigo-500 bg-indigo-50 text-indigo-700 font-medium"
-                      : "border-gray-200 text-gray-600 hover:border-indigo-300 bg-white"
+                      ? "border-brand-blue bg-brand-blue-subtle text-brand-blue-dark font-medium"
+                      : "border-gray-200 text-gray-600 hover:border-brand-blue-border bg-white"
                   }`}
                 >
                   <span>{t.icon}</span>
@@ -685,7 +685,7 @@ export default function PlanPage() {
               ))}
             </div>
             {form.themes.length > 0 && (
-              <p className="text-xs text-indigo-600 mt-3 font-medium">
+              <p className="text-xs text-brand-blue mt-3 font-medium">
                 {form.themes.length} theme{form.themes.length !== 1 ? "s" : ""} selected
               </p>
             )}
@@ -720,7 +720,7 @@ export default function PlanPage() {
               </div>
               <button
                 onClick={reset}
-                className="text-sm text-indigo-600 hover:text-indigo-700 font-medium"
+                className="text-sm text-brand-blue hover:text-brand-blue-dark font-medium"
               >
                 ← Start over
               </button>
@@ -739,7 +739,7 @@ export default function PlanPage() {
                 <div className="flex gap-3 justify-center">
                   <button
                     onClick={reset}
-                    className="text-sm bg-indigo-600 text-white px-5 py-2.5 rounded-xl hover:bg-indigo-700"
+                    className="text-sm bg-brand-blue text-white px-5 py-2.5 rounded-xl hover:bg-brand-blue-dark"
                   >
                     Try Again
                   </button>
@@ -765,7 +765,7 @@ export default function PlanPage() {
                   </p>
                   <Link
                     href={browseUrl}
-                    className="inline-block bg-indigo-600 hover:bg-indigo-700 text-white font-semibold px-6 py-3 rounded-xl text-sm transition-colors"
+                    className="inline-block bg-brand-blue hover:bg-brand-blue-dark text-white font-semibold px-6 py-3 rounded-xl text-sm transition-colors"
                   >
                     Browse All Matching Rentals →
                   </Link>

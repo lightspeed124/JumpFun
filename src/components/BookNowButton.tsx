@@ -15,7 +15,7 @@ export default function BookNowButton({ itemId }: { itemId: string }) {
   return (
     <button
       onClick={handleClick}
-      className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-4 rounded-xl transition-colors text-base"
+      className="w-full bg-brand-blue hover:bg-brand-blue-dark text-white font-bold py-4 rounded-xl transition-colors text-base"
     >
       Book Now
     </button>

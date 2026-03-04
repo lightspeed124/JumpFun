@@ -27,7 +27,7 @@ export default function Navbar() {
             <NavCityPicker />
             <Link
               href="/plan"
-              className="text-sm font-semibold text-white bg-indigo-600 hover:bg-indigo-700 px-4 py-1.5 rounded-full transition-colors"
+              className="text-sm font-semibold text-white bg-brand-blue hover:bg-brand-blue-dark px-4 py-1.5 rounded-full transition-colors"
             >
               Get Matched
             </Link>
@@ -41,7 +41,7 @@ export default function Navbar() {
               <span>♥</span>
               <span>Saved</span>
             </Link>
-            <button className="text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 px-4 py-2 rounded-lg">
+            <button className="text-sm font-medium text-white bg-brand-blue hover:bg-brand-blue-dark px-4 py-2 rounded-lg">
               Sign In
             </button>
           </div>

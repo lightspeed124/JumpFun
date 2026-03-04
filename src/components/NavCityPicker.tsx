@@ -70,7 +70,7 @@ export default function NavCityPicker() {
   return (
     <div ref={containerRef} className="relative hidden md:flex items-center">
       {editing ? (
-        <span className="relative inline-flex items-center border border-indigo-400 rounded-full px-3 py-1 bg-white">
+        <span className="relative inline-flex items-center border border-brand-blue-border rounded-full px-3 py-1 bg-white">
           <span className="text-gray-400 text-xs mr-1.5">📍</span>
           <input
             ref={inputRef}
@@ -78,7 +78,7 @@ export default function NavCityPicker() {
             onChange={(e) => setInputValue(e.target.value)}
             onKeyDown={handleKeyDown}
             placeholder="Enter city…"
-            className="outline-none text-indigo-600 font-semibold text-sm bg-transparent w-28"
+            className="outline-none text-brand-blue font-semibold text-sm bg-transparent w-28"
           />
           {suggestions.length > 0 && (
             <ul className="absolute left-0 top-full mt-1 w-64 bg-white rounded-2xl shadow-xl border border-gray-100 z-50 overflow-hidden">
@@ -86,7 +86,7 @@ export default function NavCityPicker() {
                 <li
                   key={i}
                   onMouseDown={() => selectSuggestion(s)}
-                  className="px-4 py-3 hover:bg-indigo-50 cursor-pointer"
+                  className="px-4 py-3 hover:bg-brand-blue-subtle cursor-pointer"
                 >
                   <div className="text-sm font-semibold text-gray-900">{s.name}</div>
                   {s.state && (
@@ -104,7 +104,7 @@ export default function NavCityPicker() {
           onClick={startEditing}
           disabled={loading}
           title="Click to change city"
-          className="inline-flex items-center gap-1 text-sm text-gray-600 hover:text-indigo-600 border border-gray-200 hover:border-indigo-300 rounded-full px-3 py-1.5 transition-colors disabled:opacity-40"
+          className="inline-flex items-center gap-1 text-sm text-gray-600 hover:text-brand-blue border border-gray-200 hover:border-brand-blue-border rounded-full px-3 py-1.5 transition-colors disabled:opacity-40"
         >
           <span className="text-xs">📍</span>
           {loading ? (

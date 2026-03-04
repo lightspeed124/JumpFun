@@ -50,7 +50,7 @@ export default function FavoritesPage() {
         </div>
         {items.length > 0 && (
           <Link href="/booking"
-            className="bg-indigo-600 hover:bg-indigo-700 text-white font-bold px-6 py-3 rounded-xl transition-colors text-sm">
+            className="bg-brand-blue hover:bg-brand-blue-dark text-white font-bold px-6 py-3 rounded-xl transition-colors text-sm">
             Book Selected →
           </Link>
         )}
@@ -64,7 +64,7 @@ export default function FavoritesPage() {
             Browse rentals and tap ♡ to save items here.
           </p>
           <Link href="/browse"
-            className="inline-block bg-indigo-600 hover:bg-indigo-700 text-white font-semibold px-6 py-3 rounded-xl">
+            className="inline-block bg-brand-blue hover:bg-brand-blue-dark text-white font-semibold px-6 py-3 rounded-xl">
             Browse Rentals
           </Link>
         </div>
@@ -91,7 +91,7 @@ export default function FavoritesPage() {
                     </Link>
                     <div className="flex-1 min-w-0">
                       <Link href={`/items/${item.listing_id}`}>
-                        <h4 className="font-semibold text-gray-900 hover:text-indigo-600 transition-colors line-clamp-1">{item.title}</h4>
+                        <h4 className="font-semibold text-gray-900 hover:text-brand-blue transition-colors line-clamp-1">{item.title}</h4>
                       </Link>
                       <p className="text-xs text-gray-400">{item.category_name}</p>
                     </div>
@@ -107,7 +107,7 @@ export default function FavoritesPage() {
                     </div>
                     <div className="flex flex-col gap-2 shrink-0">
                       <Link href={`/booking?from=${item.listing_id}`}
-                        className="text-xs bg-indigo-600 hover:bg-indigo-700 text-white font-semibold px-3 py-2 rounded-lg transition-colors whitespace-nowrap">
+                        className="text-xs bg-brand-blue hover:bg-brand-blue-dark text-white font-semibold px-3 py-2 rounded-lg transition-colors whitespace-nowrap">
                         Book
                       </Link>
                       <button onClick={() => handleRemove(item.listing_id)}

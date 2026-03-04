@@ -92,10 +92,10 @@ export default async function HomePage() {
                 href={`/browse?category=${encodeURIComponent(row.category_name)}`}
                 className="group flex items-center gap-2"
               >
-                <h2 className="text-xl font-bold text-gray-900 group-hover:text-indigo-600 transition-colors">
+                <h2 className="text-xl font-bold text-gray-900 group-hover:text-brand-blue transition-colors">
                   {row.category_name}
                 </h2>
-                <span className="text-gray-400 group-hover:text-indigo-500 group-hover:translate-x-1 transition-all text-lg leading-none">
+                <span className="text-gray-400 group-hover:text-brand-blue group-hover:translate-x-1 transition-all text-lg leading-none">
                   →
                 </span>
               </Link>
@@ -120,7 +120,7 @@ export default async function HomePage() {
                 <div className="w-60 shrink-0">
                   <Link
                     href={`/browse?category=${encodeURIComponent(row.category_name)}`}
-                    className="flex h-full min-h-[280px] flex-col items-center justify-center gap-3 rounded-2xl border-2 border-dashed border-gray-200 text-gray-400 hover:border-indigo-300 hover:text-indigo-500 transition-colors"
+                    className="flex h-full min-h-[280px] flex-col items-center justify-center gap-3 rounded-2xl border-2 border-dashed border-gray-200 text-gray-400 hover:border-brand-blue-border hover:text-brand-blue transition-colors"
                   >
                     <span className="text-4xl">→</span>
                     <span className="text-sm font-semibold text-center px-4">
@@ -144,7 +144,7 @@ export default async function HomePage() {
           </p>
           <Link
             href="/plan"
-            className="mt-2 inline-block bg-indigo-600 hover:bg-indigo-700 text-white font-semibold px-6 py-3 rounded-xl transition-colors text-sm shadow-sm"
+            className="mt-2 inline-block bg-brand-blue hover:bg-brand-blue-dark text-white font-semibold px-6 py-3 rounded-xl transition-colors text-sm shadow-sm"
           >
             🎯 Get Personalized Picks
           </Link>
