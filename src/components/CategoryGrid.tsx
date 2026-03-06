@@ -6,47 +6,47 @@ import type { CategorySummary } from "@/types";
 
 const CATEGORY_META: Record<string, { image: string; description: string }> = {
   "Bounce Houses": {
-    image: "PLACEHOLDER",
+    image: "/Bounce Houses.webp",
     description: "Classic inflatable castles for endless jumping fun",
   },
   "Bounce & Slide Combo": {
-    image: "PLACEHOLDER",
+    image: "/Bounce & Slide Combo.webp",
     description: "Bounce, slide, and climb all in one unit",
   },
   "Water Slides": {
-    image: "PLACEHOLDER",
+    image: "/Water Slides.webp",
     description: "Beat the heat with thrilling wet-and-wild slides",
   },
   "Obstacle Courses": {
-    image: "PLACEHOLDER",
+    image: "/Obstacle Courses.webp",
     description: "Race through tunnels, climbs, and pop-up challenges",
   },
   "Interactive Games": {
-    image: "PLACEHOLDER",
+    image: "/Interactive Games.webp",
     description: "Carnival-style games and attractions for all ages",
   },
   "Sports Games": {
-    image: "PLACEHOLDER",
+    image: "/Sports Games.png",
     description: "Giant basketball, football, and competitive fun",
   },
   "Toddler Units": {
-    image: "PLACEHOLDER",
+    image: "/Toddler Units.webp",
     description: "Soft, safe bouncing designed for little ones",
   },
   "Water Games": {
-    image: "PLACEHOLDER",
+    image: "/Water Games.jpg",
     description: "Dunk tanks and water games — a guaranteed crowd-pleaser",
   },
   "Concessions": {
-    image: "PLACEHOLDER",
+    image: "/Concessions.png",
     description: "Popcorn, cotton candy, and snow cones for the party",
   },
   "Tables & Chairs": {
-    image: "PLACEHOLDER",
+    image: "/Tables & Chairs.png",
     description: "Complete your setup with seating for all guests",
   },
   "Tents": {
-    image: "PLACEHOLDER",
+    image: "/Tents.png",
     description: "Shade and shelter for any outdoor event",
   },
 };
