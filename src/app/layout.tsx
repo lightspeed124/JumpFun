@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
 import { CityProvider } from "@/context/CityContext";
+import { StickySearchProvider } from "@/context/StickySearchContext";
 
 export const metadata: Metadata = {
   title: "JumpFun — Book Bounce Houses & Party Rentals",
@@ -17,10 +18,12 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className="min-h-screen bg-gray-50 antialiased">
-        <CityProvider>
-          <Navbar />
-          <main>{children}</main>
-        </CityProvider>
+        <StickySearchProvider>
+          <CityProvider>
+            <Navbar />
+            <main>{children}</main>
+          </CityProvider>
+        </StickySearchProvider>
         <footer className="bg-gray-900 text-gray-300 mt-16">
           <div className="max-w-7xl mx-auto px-4 py-12 grid grid-cols-2 md:grid-cols-4 gap-8">
             <div>

@@ -1,9 +1,8 @@
 import Link from "next/link";
-import Image from "next/image";
 import { Home, Layers, Waves, Flag, Gamepad2, Baby, Utensils, TableProperties, Tent, Target } from "lucide-react";
 import { getDistinctCategories, getFeaturedListings } from "@/lib/data";
 import ItemCard from "@/components/ItemCard";
-import HeroSearch from "@/components/HeroSearch";
+import HomeHero from "@/components/HomeHero";
 import FavouritesRow from "@/components/FavouritesRow";
 import CityRentalsBanner from "@/components/CityRentalsBanner";
 
@@ -17,41 +16,7 @@ export default async function HomePage() {
     <div className="bg-white min-h-screen">
 
       {/* ── Hero ─────────────────────────────────────────────────────────── */}
-      <section className="relative h-[66vh] min-h-[520px] overflow-hidden">
-        {/* Background scene — shown at full brightness */}
-        <Image
-          src="/landing page background.png"
-          alt="Kids having a blast in a bounce house on a sunny day"
-          fill
-          className="object-cover object-center"
-          priority
-        />
-
-        {/* Soft dark halo behind the text — no hard edges, image shows fully on sides */}
-        <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-          <div className="w-[700px] h-[440px] bg-black/40 rounded-full blur-3xl" />
-        </div>
-
-        <div className="relative h-full flex flex-col items-center justify-center px-4 text-center gap-5">
-          <p className="text-white/85 text-[11px] font-bold tracking-[0.22em] uppercase drop-shadow">
-            Bounce Houses &nbsp;·&nbsp; Water Slides &nbsp;·&nbsp; Obstacle Courses &nbsp;·&nbsp; Combo Jumpers
-          </p>
-          <h1 className="text-4xl md:text-[54px] font-extrabold text-white leading-tight drop-shadow-lg">
-            More Bounce Houses,<br className="hidden sm:block" />
-            <span className="text-yellow-300"> Booked in Seconds.</span>
-          </h1>
-          <p className="text-white/80 text-base md:text-lg font-medium max-w-xl leading-relaxed drop-shadow">
-            Browse hundreds of bounce houses and inflatables near you —<br className="hidden md:block" />
-            pick your favorite and book it in minutes.
-          </p>
-
-          {/* Search bar — white pill stands on its own */}
-          <div className="w-full max-w-2xl mt-1">
-            <HeroSearch />
-          </div>
-
-        </div>
-      </section>
+      <HomeHero />
 
       {/* ── City rentals band ─────────────────────────────────────────────── */}
       <div className="border-t border-b border-gray-200 bg-white py-5">
