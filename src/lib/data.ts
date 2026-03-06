@@ -68,6 +68,31 @@ export async function getBusinessSitesByCity(city: string): Promise<string[]> {
 // CATEGORIES
 // ─────────────────────────────────────────────────────────────────────────────
 
+// Maps verbose DB names → simplified display names shown everywhere in the UI.
+// Categories not listed here keep their DB name unchanged.
+const CATEGORY_DISPLAY_NAMES: Record<string, string> = {
+  "Combo Bouncers (Bounce + Slide)":       "Bounce & Slide Combo",
+  "Concessions & Equipment":               "Concessions",
+  "Interactive Inflatables":               "Interactive Games",
+  "Tents & Canopies":                      "Tents",
+  "Sports Inflatables & Inflatable Games": "Sports Games",
+  "Toddler Inflatables":                   "Toddler Units",
+  "Dunk Tanks & Water Games":              "Water Games",
+};
+
+// Reverse map: display name → DB name (used when filtering listings by category).
+const CATEGORY_DB_NAMES: Record<string, string> = Object.fromEntries(
+  Object.entries(CATEGORY_DISPLAY_NAMES).map(([db, display]) => [display, db])
+);
+
+function toDisplayName(dbName: string): string {
+  return CATEGORY_DISPLAY_NAMES[dbName] ?? dbName;
+}
+
+function toDbName(displayOrDbName: string): string {
+  return CATEGORY_DB_NAMES[displayOrDbName] ?? displayOrDbName;
+}
+
 export async function getDistinctCategories(): Promise<CategorySummary[]> {
   const { data, error } = await supabase
     .from("app_categories")
@@ -82,7 +107,9 @@ export async function getDistinctCategories(): Promise<CategorySummary[]> {
       map.set(row.category_slug, { ...row });
     }
   }
-  return [...map.values()].sort((a, b) => b.listing_count - a.listing_count);
+  return [...map.values()]
+    .sort((a, b) => b.listing_count - a.listing_count)
+    .map((c) => ({ ...c, category_name: toDisplayName(c.category_name) }));
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -104,7 +131,7 @@ export async function getListings(filters: ListingFilters = {}): Promise<RentalI
   let query = supabase.from("app_listings").select("*");
 
   if (filters.businessSite) query = query.eq("business_site", filters.businessSite);
-  if (filters.categoryName) query = query.ilike("category_name", filters.categoryName);
+  if (filters.categoryName) query = query.ilike("category_name", toDbName(filters.categoryName));
   if (filters.theme) query = query.ilike("title", `%${filters.theme}%`);
   if (filters.search) {
     const q = filters.search;
@@ -121,7 +148,7 @@ export async function getListings(filters: ListingFilters = {}): Promise<RentalI
   query = query.order("title").limit(filters.limit ?? 1000);
   const { data, error } = await query;
   if (error) { console.error("getListings:", error.message); return []; }
-  return data as RentalItem[];
+  return (data as RentalItem[]).map((r) => ({ ...r, category_name: toDisplayName(r.category_name) }));
 }
 
 export async function getListingById(id: number): Promise<RentalItem | null> {
@@ -131,7 +158,8 @@ export async function getListingById(id: number): Promise<RentalItem | null> {
     .eq("listing_id", id)
     .single();
   if (error) { console.error("getListingById:", error.message); return null; }
-  return data as RentalItem;
+  const item = data as RentalItem;
+  return { ...item, category_name: toDisplayName(item.category_name) };
 }
 
 export async function getListingsByBusiness(
@@ -148,7 +176,7 @@ export async function getListingsByBusiness(
   if (excludeId !== undefined) query = query.neq("listing_id", excludeId);
   const { data, error } = await query;
   if (error) { console.error("getListingsByBusiness:", error.message); return []; }
-  return data as RentalItem[];
+  return (data as RentalItem[]).map((r) => ({ ...r, category_name: toDisplayName(r.category_name) }));
 }
 
 export async function getSimilarListings(
@@ -159,12 +187,12 @@ export async function getSimilarListings(
   const { data, error } = await supabase
     .from("app_listings")
     .select("*")
-    .ilike("category_name", categoryName)
+    .ilike("category_name", toDbName(categoryName))
     .neq("business_site", excludeSite)
     .order("title")
     .limit(limit);
   if (error) { console.error("getSimilarListings:", error.message); return []; }
-  return data as RentalItem[];
+  return (data as RentalItem[]).map((r) => ({ ...r, category_name: toDisplayName(r.category_name) }));
 }
 
 const COMPLEMENT_SLUGS = ["concession", "table", "chair", "tent", "game", "accessory", "food"];
@@ -181,7 +209,7 @@ export async function getComplementaryListings(
     .order("category_name")
     .limit(limit * 3);
   if (error) { console.error("getComplementaryListings:", error.message); return []; }
-  const all = data as RentalItem[];
+  const all = (data as RentalItem[]).map((r) => ({ ...r, category_name: toDisplayName(r.category_name) }));
   all.sort((a, b) => {
     const aComp = COMPLEMENT_SLUGS.some((s) => a.category_slug.toLowerCase().includes(s)) ? 0 : 1;
     const bComp = COMPLEMENT_SLUGS.some((s) => b.category_slug.toLowerCase().includes(s)) ? 0 : 1;
