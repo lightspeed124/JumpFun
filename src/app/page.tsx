@@ -32,16 +32,7 @@ export default async function HomePage() {
 
         <FavouritesRow />
 
-        {/* ── Category grid ──────────────────────────────────────────────── */}
-        <CategoryGrid categories={categories} totalCount={totalListings} />
-
-        {/* ── Plan by Occasion ─────────────────────────────────────────── */}
-        <PlanByOccasion />
-
-        {/* ── How It Works ───────────────────────────────────────────────── */}
-        <HowItWorks />
-
-        {/* ── Featured items ───────────────────────────────────────────────── */}
+        {/* ── Trending This Week ─────────────────────────────────────────── */}
         <section>
           <div className="flex items-center justify-between mb-4">
             <h2 className="text-xl font-bold text-gray-900">Trending This Week</h2>
@@ -55,6 +46,15 @@ export default async function HomePage() {
             ))}
           </div>
         </section>
+
+        {/* ── Category grid ──────────────────────────────────────────────── */}
+        <CategoryGrid categories={categories} totalCount={totalListings} />
+
+        {/* ── How It Works ───────────────────────────────────────────────── */}
+        <HowItWorks />
+
+        {/* ── Plan by Occasion ─────────────────────────────────────────── */}
+        <PlanByOccasion />
 
         {/* ── FAQ ──────────────────────────────────────────────────────────── */}
         <FAQ />
